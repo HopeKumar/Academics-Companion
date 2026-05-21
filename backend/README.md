@@ -32,7 +32,7 @@ This folder contains the backend services for **Academic Companion**.
 ## Setup Instructions
 ```md 
 
-```bash
+
 mvn clean install
 mvn compile
 mvn exec:java
