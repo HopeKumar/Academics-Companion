@@ -3,7 +3,7 @@
 
 # `ui-ux/README.md`
 
-```md
+
 # UI/UX Design
 
 This folder contains all design-related files for **Academic Companion**.
