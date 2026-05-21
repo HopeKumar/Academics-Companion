@@ -1,7 +1,7 @@
 
 ---
 
-# 🟪 `ui-ux/README.md`
+# `ui-ux/README.md`
 
 ```md
 # UI/UX Design
