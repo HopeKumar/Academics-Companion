@@ -30,6 +30,7 @@ This folder contains the backend services for **Academic Companion**.
 - config/
 
 ## Setup Instructions
+```md 
 
 ```bash
 mvn clean install
