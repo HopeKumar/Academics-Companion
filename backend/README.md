@@ -10,7 +10,7 @@ This folder contains the backend services for **Academic Companion**.
 
 ## Tech Stack
 - Java 17
-- Vert.x 4.5.13
+- Vertex 4.5.13
 - MongoDB 7
 - Maven
 
