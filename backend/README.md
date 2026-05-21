@@ -3,7 +3,7 @@
 
 # 🟥 `backend/README.md`
 
-```md
+
 # Backend
 
 This folder contains the backend services for **Academic Companion**.
