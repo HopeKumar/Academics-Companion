@@ -12,7 +12,7 @@ Academic Companion is an AI-powered LMS enhancement system that personalizes lea
 
 ### Backend
 - Java 17
-- Vert.x 4.5.13
+- Vertex 4.5.13
 - MongoDB 7
 - Maven
 
