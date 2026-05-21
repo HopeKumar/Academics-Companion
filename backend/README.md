@@ -1,7 +1,7 @@
 
 ---
 
-# 🟥 `backend/README.md`
+# `backend/README.md`
 
 
 # Backend
