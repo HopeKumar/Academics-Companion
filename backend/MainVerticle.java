@@ -16,7 +16,7 @@ import java.util.logging.*;
 public class MainVerticle extends AbstractVerticle {
 
     // ───────────────────────────────────────────────
-    // IMPROVED: structured logger (replaces bare System.out.println)
+    //  (replaces bare System.out.println)
     // ───────────────────────────────────────────────
     private static final Logger LOG = Logger.getLogger(MainVerticle.class.getName());
 
@@ -24,7 +24,7 @@ public class MainVerticle extends AbstractVerticle {
     private WebClient   webClient;
 
     // ───────────────────────────────────────────────
-    // IMPROVED: thread-safe cache with TTL eviction
+    //   Thread-safe cache with TTL eviction
     //   - ConcurrentHashMap replaces raw HashMap
     //   - Each entry stores its insertion timestamp
     //   - Entries older than CACHE_TTL_MS are treated as stale
@@ -46,7 +46,7 @@ public class MainVerticle extends AbstractVerticle {
     }
 
     // ───────────────────────────────────────────────
-    // IMPROVED: rate limiter
+    //   Rate limiter
     //   - Tracks per-student request counts in a 60-second window
     //   - ConcurrentHashMap + AtomicInteger for thread safety
     // ───────────────────────────────────────────────
@@ -70,7 +70,7 @@ public class MainVerticle extends AbstractVerticle {
     }
 
     // ───────────────────────────────────────────────
-    // IMPROVED: AI request queue
+    // AI request queue
     //   - Semaphore limits concurrent Ollama calls to AI_CONCURRENCY
     //   - Prevents Ollama from being overloaded with parallel requests
     // ───────────────────────────────────────────────
@@ -90,7 +90,7 @@ public class MainVerticle extends AbstractVerticle {
 
         mongoClient = MongoClient.createShared(vertx, config);
 
-        // IMPROVED: WebClient created once with timeout options
+        // WebClient created once with timeout options
         webClient = WebClient.create(vertx, new WebClientOptions()
                 .setConnectTimeout(AI_TIMEOUT_MS)
                 .setIdleTimeout(AI_TIMEOUT_MS));
@@ -124,7 +124,7 @@ public class MainVerticle extends AbstractVerticle {
     }
 
     // ───────────────────────────────────────────────
-    // IMPROVED: request validation helper
+    // Request validation helper
     // ───────────────────────────────────────────────
     private boolean isBlank(String s) {
         return s == null || s.trim().isEmpty();
@@ -146,7 +146,7 @@ public class MainVerticle extends AbstractVerticle {
 
     // ================= START TEST =================
     private void startTest(RoutingContext ctx) {
-        // IMPROVED: null / blank validation
+        // Null / blank validation
         JsonObject body = ctx.getBodyAsJson();
         if (body == null) { badRequest(ctx, "Request body is required"); return; }
 
@@ -184,7 +184,7 @@ public class MainVerticle extends AbstractVerticle {
 
     // ================= GET QUESTION =================
     private void getQuestion(RoutingContext ctx) {
-        // IMPROVED: null / blank validation
+        // Null / blank validation
         String studentId = ctx.request().getParam("studentId");
         if (isBlank(studentId)) { badRequest(ctx, "studentId is required"); return; }
 
@@ -234,7 +234,7 @@ public class MainVerticle extends AbstractVerticle {
 
     // ================= HANDLE ANSWER =================
     private void handleAnswer(RoutingContext ctx) {
-        // IMPROVED: null / blank validation
+        // Null / blank validation
         JsonObject body = ctx.getBodyAsJson();
         if (body == null) { badRequest(ctx, "Request body is required"); return; }
 
@@ -244,7 +244,7 @@ public class MainVerticle extends AbstractVerticle {
         if (isBlank(studentId))  { badRequest(ctx, "studentId is required"); return; }
         if (isBlank(userAnswer)) { badRequest(ctx, "answer is required");    return; }
 
-        // IMPROVED: rate limiting per student
+        // Rate limiting per student
         RateBucket bucket = rateBuckets.computeIfAbsent(studentId, k -> new RateBucket());
         if (!bucket.tryAcquire()) {
             LOG.warning("RATE LIMITED | student=" + studentId);
@@ -289,7 +289,7 @@ public class MainVerticle extends AbstractVerticle {
                                 final String finalCorrect     = question.getString("answer");
                                 final String finalQuestionText = question.getString("question");
 
-                                // 🔥 AI EVALUATION (with queue, timeout, robust parsing)
+                                //  AI EVALUATION (with queue, timeout, parsing)
                                 evaluateWithAI(finalQuestionText, finalCorrect, finalUserAnswer,
                                         (isCorrect, explanation) -> {
 
@@ -337,15 +337,15 @@ public class MainVerticle extends AbstractVerticle {
     }
 
     // ───────────────────────────────────────────────────────────────────
-    // IMPROVED: AI evaluation — robust, timeout-protected, queue-backed
+    // AI evaluation — robust, timeout-protected, queue-backed
     // ───────────────────────────────────────────────────────────────────
     private void evaluateWithAI(String question, String correct, String user,
                                 java.util.function.BiConsumer<Boolean, String> callback) {
 
-        // IMPROVED: deterministic cache key using trimmed, lowercased inputs
+        //  Deterministic cache key using trimmed, lowercased inputs
         String key = (question.trim() + "|" + user.trim()).toLowerCase();
 
-        // IMPROVED: TTL-aware cache lookup
+        // TTL-aware cache lookup
         CacheEntry cached = aiCache.get(key);
         if (cached != null && !cached.isExpired()) {
             LOG.fine("AI CACHE HIT | key=" + key.substring(0, Math.min(40, key.length())));
@@ -358,7 +358,7 @@ public class MainVerticle extends AbstractVerticle {
         // Remove stale entry if present
         if (cached != null) aiCache.remove(key);
 
-        // IMPROVED: semaphore-backed queue — blocks excess concurrent AI calls
+        // Semaphore-backed queue — blocks excess concurrent AI calls
         if (!aiSemaphore.tryAcquire()) {
             LOG.warning("AI QUEUE FULL — returning fallback");
             callback.accept(false, "Service is busy. Please try again shortly.");
@@ -367,7 +367,7 @@ public class MainVerticle extends AbstractVerticle {
 
         LOG.info("AI CALL | question=" + question.substring(0, Math.min(60, question.length())));
 
-        // IMPROVED: structured prompt that forces a clear first token
+        // Structured prompt that forces a clear first token
         String prompt = "You are a strict answer evaluator.\n\n"
                 + "Question: " + question + "\n"
                 + "Correct Answer: " + correct + "\n"
@@ -384,7 +384,7 @@ public class MainVerticle extends AbstractVerticle {
                 .put("prompt", prompt)
                 .put("stream", false);
 
-        // IMPROVED: timeout handling — vertx timer fires fallback if AI hangs
+        //  Timeout handling — vertx timer fires fallback if AI hangs
         final long[] timerId = {-1};
         final boolean[] responded = {false};
 
@@ -423,7 +423,7 @@ public class MainVerticle extends AbstractVerticle {
                     }
 
                     // ───────────────────────────────────────────────
-                    // IMPROVED: robust evaluation parsing
+                    //   Robust evaluation parsing
                     //   Old logic: response.contains("correct") && !response.contains("wrong")
                     //   Problem:   "This is NOT correct" → false positive
                     //              "wrong because not correct" → false negative
@@ -447,9 +447,7 @@ public class MainVerticle extends AbstractVerticle {
     }
 
     /**
-     * IMPROVED: safe AI verdict parser.
-     *
-     * Strategy (in order):
+     * Safe AI verdict parser.
      *  1. Check if the first word is "correct" or "wrong" — most reliable signal.
      *  2. If ambiguous, fall back to a balanced keyword search with negation awareness.
      *  3. Default to false (conservative — never give credit on ambiguity).
@@ -484,7 +482,7 @@ public class MainVerticle extends AbstractVerticle {
     }
 
     // ─────────────────────────────────────────────
-    // IMPROVED: analytics with per-topic accuracy
+    // Analytics with per-topic accuracy
     // ─────────────────────────────────────────────
     private void getAnalytics(RoutingContext ctx) {
 
@@ -504,7 +502,7 @@ public class MainVerticle extends AbstractVerticle {
                 }
             }
 
-            // IMPROVED: richer analytics — accuracy per student + weak threshold configurable
+            // Richer analytics — accuracy per student + weak threshold configurable
             List<JsonObject> studentStats = new ArrayList<>();
             List<String>     weakStudents = new ArrayList<>();
 
@@ -525,12 +523,12 @@ public class MainVerticle extends AbstractVerticle {
             ctx.response().end(new JsonObject()
                     .put("totalStudents", total.size())
                     .put("weakStudents", weakStudents)
-                    .put("studentStats", studentStats)   // IMPROVED: added full breakdown
+                    .put("studentStats", studentStats)   // Added full breakdown
                     .encode());
         });
     }
 
-    // IMPROVED: topic analytics includes attempt count + average level
+    // Topic analytics includes attempt count + average level
     private void getTopicAnalytics(RoutingContext ctx) {
 
         mongoClient.find("sessions", new JsonObject(), res -> {
@@ -549,7 +547,7 @@ public class MainVerticle extends AbstractVerticle {
                 count.put(topic, count.getOrDefault(topic, 0) + 1);
             }
 
-            // IMPROVED: return avgLevel + totalAttempts per topic (not just raw sum)
+            // Return avgLevel + totalAttempts per topic (not just raw sum)
             Map<String, JsonObject> topicStats = new LinkedHashMap<>();
             for (String topic : levelSum.keySet()) {
                 int    c   = count.get(topic);
@@ -580,7 +578,7 @@ public class MainVerticle extends AbstractVerticle {
                             .filter(r -> Boolean.TRUE.equals(r.getBoolean("correct")))
                             .count();
 
-                    // IMPROVED: rounded accuracy
+                    // Rounded accuracy
                     double accuracy = total == 0 ? 0 :
                             Math.round((correct * 100.0 / total) * 10.0) / 10.0;
 
@@ -623,7 +621,7 @@ public class MainVerticle extends AbstractVerticle {
                             .filter(s -> s.getInteger("level", 0) <= 2)
                             .map(s -> s.getString("topic"))
                             .filter(t -> t != null)
-                            .distinct() // IMPROVED: deduplicate topics
+                            .distinct() // Deduplicate topics
                             .toList();
 
                     ctx.response().end(new JsonObject()
@@ -633,7 +631,7 @@ public class MainVerticle extends AbstractVerticle {
     }
 
     public static void main(String[] args) {
-        // IMPROVED: deploy with worker thread count matching CPU cores
+        // Deploy with worker thread count matching CPU cores
         DeploymentOptions opts = new DeploymentOptions()
                 .setInstances(Runtime.getRuntime().availableProcessors());
         Vertx.vertx().deployVerticle(MainVerticle.class.getName(), opts);
