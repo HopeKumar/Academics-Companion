@@ -1,0 +1,192 @@
+*** Begin Patch
+*** Update File: src/app/app.html
+@@
+             <!-- Takeaways card -->
+             <div class="summary-detail-card">
+               <div class="summary-card-header">
+                 <svg
+                   width="16"
+                   height="16"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="#1a2f6e"
+                   stroke-width="2"
+                 >
+                   <circle cx="12" cy="12" r="10" />
+                   <line x1="12" y1="8" x2="12" y2="12" />
+                   <line x1="12" y1="16" x2="12.01" y2="16" />
+                 </svg>
+                 <span class="summary-card-title">Important Takeaways</span>
+               </div>
+               <div class="summary-takeaways-list">
+                 <div
+                   class="summary-takeaway-item"
+                   *ngFor="let item of summaryTakeaways; let i = index"
+                 >
+                   <span class="summary-takeaway-num">{{ i + 1 }}</span>
+                   <span class="summary-takeaway-text">{{ item }}</span>
+                 </div>
+               </div>
+             </div>
++
++            <!-- Chatbot card -->
++            <div class="summary-chat-card">
++              <div class="summary-chat-top">
++                <p class="summary-chat-prompt">Chat with Campus LM</p>
++                <p class="summary-chat-helper">Ask a question about this document and get instant help.</p>
++              </div>
++              <div class="summary-chat-messages" *ngIf="chatMessages.length > 0">
++                <div class="chat-message" *ngFor="let message of chatMessages">
++                  <div
++                    class="message-bubble"
++                    [ngClass]="{
++                      'user-message': message.role === 'user',
++                      'assistant-message': message.role === 'assistant'
++                    }"
++                  >
++                    {{ message.text }}
++                  </div>
++                </div>
++              </div>
++              <div class="summary-chat-input-row">
++                <input
++                  type="text"
++                  class="chatbot-input"
++                  placeholder="Type your question..."
++                  [(ngModel)]="chatInput"
++                  (keyup.enter)="sendChat()"
++                />
++                <button
++                  class="chatbot-send-btn"
++                  [disabled]="!chatInput.trim()"
++                  (click)="sendChat()"
++                  type="button"
++                >
++                  Send
++                </button>
++              </div>
++            </div>
+*** End Patch
+*** Begin Patch
+*** Update File: src/app/app.ts
+@@
+   sourcesPanelCollapsed: boolean = false;
+ 
+   uploadedSources: SourceFile[] = [];
++
++  chatInput: string = '';
++  chatMessages: { role: 'user' | 'assistant'; text: string }[] = [];
+ 
+   sourcesSearchQuery: string = '';
+@@
+   openDiscussion(disc: Discussion): void {
+     console.log(disc.title);
+   }
++
++  sendChat(): void {
++    const message = this.chatInput.trim();
++    if (!message) {
++      return;
++    }
++
++    this.chatMessages.push({ role: 'user', text: message });
++    this.chatInput = '';
++
++    const response = this.getChatResponse(message);
++    this.chatMessages.push({ role: 'assistant', text: response });
++  }
++
++  private getChatResponse(question: string): string {
++    const q = question.toLowerCase();
++    const overview = this.summaryOverview;
++    const keyPoints = this.summaryKeyPoints;
++    const takeaways = this.summaryTakeaways;
++
++    if (q.includes('key point') || q.includes('main point') || q.includes('important point')) {
++      return keyPoints.length
++        ? `Key points: ${keyPoints.join(' ')}`
++        : 'I do not have key point details for this document yet.';
++    }
++
++    if (q.includes('takeaway') || q.includes('what should i remember') || q.includes('remember')) {
++      return takeaways.length
++        ? `Important takeaways: ${takeaways.join(' ')}`
++        : 'I do not have takeaways for this document yet.';
++    }
++
++    if (q.includes('overview') || q.includes('summary') || q.includes('what is this document about')) {
++      return overview || 'This document does not have a summary available yet.';
++    }
++
++    if (q.includes('methodology') || q.includes('approach') || q.includes('how does')) {
++      return overview || 'I could not find a specific methodology section in the current summary.';
++    }
++
++    if (q.includes('application') || q.includes('real world') || q.includes('practice')) {
++      return overview || 'I could not find application details in the current summary.';
++    }
++
++    if (q.includes('conclusion') || q.includes('finding') || q.includes('result')) {
++      return overview || 'I could not locate a conclusion section in the current summary.';
++    }
++
++    return overview
++      ? `Here is what I found: ${overview}`
++      : 'I could not find an answer in the current summary. Try asking about key points or takeaways.';
++  }
+*** End Patch
+*** Begin Patch
+*** Update File: src/app/app.css
+@@
+ .summary-chat-input-row {
+   display: flex;
+   gap: 10px;
+   align-items: center;
+   padding: 18px 20px 22px;
+   background: #ffffff;
+ }
+ 
+ .summary-chat-messages {
+   padding: 18px 20px;
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+   background: #f7f9ff;
+ }
+@@
+ .assistant-message {
+   background: #eef2fb;
+   color: #1f2f5c;
+   border: 1px solid #dce3ee;
+   margin-right: auto;
+ }
+ 
+ .summary-chat-card {
+   border-radius: 22px;
+   overflow: hidden;
+   border: 1px solid rgba(18, 18, 18, 0.08);
+   box-shadow: 0 18px 34px rgba(18, 18, 18, 0.08);
+   margin-bottom: 18px;
+   background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,250,255,0.95) 100%);
+ }
+@@
+ .chatbot-input {
+   flex: 1;
+   padding: 14px 16px;
+   border: 1px solid #c8d5ee;
+   border-radius: 999px;
+   font-size: 14px;
+   font-family: inherit;
+   outline: none;
+   transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+   background: #f6f8fc;
+   color: #1f2f5c;
+   box-shadow: 0 0 0 1px rgba(26, 47, 110, 0.08);
+ }
+ 
+ .chatbot-input:focus {
+   border-color: #1a2f6e;
+   background: #fff;
+   box-shadow: 0 0 0 2px rgba(26, 47, 110, 0.18);
+ }
+*** End Patch
