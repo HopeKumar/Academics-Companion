@@ -1043,7 +1043,7 @@
 
 .flashcard {
   width: 100%;
-  min-height: 220px;
+  min-height: 360px;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.5s ease;
@@ -1062,7 +1062,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  min-height: 220px;
+  min-height: 360px;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   background: linear-gradient(135deg, rgba(54, 91, 192, 0.85) 0%, rgba(26, 47, 110, 0.85) 100%);
@@ -1108,13 +1108,38 @@
 }
 
 
-
-
 .card-controls {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 12px;
+}
+
+
+.fc-know-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+.fc-know-btn:hover { opacity: 0.85; }
+
+.fc-dont-know {
+  background: #fff0f0;
+  color: #c62828;
+  border-color: #ffd6d6;
+}
+
+.fc-know {
+  background: #f0fff4;
+  color: #2e7d32;
+  border-color: #c8e6c9;
 }
 
 .ctrl-btn {
@@ -1547,13 +1572,13 @@
   font-size: 11px;
   padding: 4px 12px;
   border-radius: 12px;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 8px;
 }
 
 .disc-title {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   color: #1a2f6e;
   margin-bottom: 10px;
 }

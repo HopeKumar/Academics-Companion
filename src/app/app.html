@@ -968,13 +968,17 @@
                 </div>
               </div>
             </div>
-            <div class="card-controls" style="justify-content: space-between;">
+            <div class="card-controls" style="position:relative;">
               <button class="ctrl-btn" [disabled]="currentCardIndex === 0" (click)="prevCard()">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M15 18l-6-6 6-6" />
                 </svg>
                 Previous
               </button>
+              <div style="display:flex; gap:8px; align-items:center; position:absolute; left:50%; transform:translateX(-50%);">
+                <button class="fc-know-btn fc-dont-know">I Don't Know</button>
+                <button class="fc-know-btn fc-know">I Know</button>
+              </div>
               <button class="ctrl-btn" [disabled]="currentCardIndex === flashcards.length - 1" (click)="nextCard()">
                 Next
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
