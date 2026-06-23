@@ -1,0 +1,138 @@
+{
+  "MindmapController.java": [
+    "POST /generate",
+    "GET /{sourceId}",
+    "GET /source/{sourceId}"
+  ],
+  "AnalyticsController.java": [
+    "GET {/analytics, /api/v1/analytics}",
+    "GET {/progress, /api/v1/progress}"
+  ],
+  "AdminController.java": [
+    "POST /reindex"
+  ],
+  "MetricsController.java": [
+    "GET /summary"
+  ],
+  "SummaryController.java": [
+    "POST /generate",
+    "GET /{sourceId}",
+    "GET /source/{sourceId}",
+    "GET /{sourceId}/download"
+  ],
+  "AIHealthController.java": [
+    "GET /ai"
+  ],
+  "NotificationController.java": [
+    "GET /unread",
+    "GET /unread-count",
+    "GET /summary",
+    "POST /{id}/read",
+    "POST /read-all"
+  ],
+  "SlideController.java": [
+    "POST /generate"
+  ],
+  "FlashcardController.java": [
+    "POST /generate",
+    "GET /source/{sourceId}",
+    "GET /due",
+    "GET /decks",
+    "GET /decks/{deckId}",
+    "GET /decks/{deckId}/stats",
+    "POST /review",
+    "GET /decks/{deckId}/download"
+  ],
+  "DebugController.java": [
+    "GET /source/{sourceId}"
+  ],
+  "TopicMasteryController.java": [
+    "GET /student/{id}",
+    "GET /subject/{subject}",
+    "GET /weak-topics/{studentId}",
+    "GET /strong-topics/{studentId}"
+  ],
+  "DashboardController.java": [
+    "GET {/dashboard, /api/v1/dashboard}",
+    "GET {/api/dashboard/student/{id}, /api/v1/dashboard/student/{id}}",
+    "GET {/api/dashboard/faculty, /api/v1/dashboard/faculty}"
+  ],
+  "AdaptiveController.java": [
+    "GET /profile/{studentId}",
+    "GET /recommendations/{studentId}",
+    "GET /progress/{studentId}"
+  ],
+  "QuestionGenerationController.java": [
+    "POST /generate-question",
+    "POST /generate-adaptive",
+    "POST /submit"
+  ],
+  "StudyPlanController.java": [
+    "POST /generate",
+    "GET /{studentId}",
+    "PUT /regenerate"
+  ],
+  "SlideExportController.java": [
+    "POST /export",
+    "GET /export/{sourceId}",
+    "GET /source/{sourceId}",
+    "GET /{sourceId}/download"
+  ],
+  "HealthController.java": [
+    "GET /details"
+  ],
+  "DocumentController.java": [
+    "GET /{id}",
+    "DELETE /{id}"
+  ],
+  "AuthController.java": [
+    "POST /register",
+    "POST /login",
+    "POST /refresh",
+    "POST /logout",
+    "GET /me"
+  ],
+  "PodcastController.java": [
+    "POST /generate",
+    "GET /status/{id}",
+    "GET /result/{id}",
+    "GET /{id}",
+    "GET /source/{sourceId}",
+    "GET /{id}/audio"
+  ],
+  "RecommendationController.java": [
+    "GET {/recommendations, /api/v1/recommendations}",
+    "GET {/api/recommendations/{studentId}, /api/v1/recommendations/{studentId}}"
+  ],
+  "DiscussionController.java": [
+    "POST /reply",
+    "POST /upvote",
+    "POST /accepted",
+    "POST /summary"
+  ],
+  "UploadController.java": [
+    "GET /{id}",
+    "POST /upload",
+    "POST /url",
+    "DELETE /{id}"
+  ],
+  "ChatController.java": [
+    "GET /sessions",
+    "GET /history",
+    "DELETE /sessions/{id}"
+  ],
+  "TestController.java": [
+    "POST /next",
+    "POST /simulate",
+    "POST /mastery"
+  ],
+  "QuestionBankController.java": [
+    "POST /upload",
+    "GET /search",
+    "GET /generate"
+  ],
+  "JobStatusController.java": [
+    "GET /source/{sourceId}",
+    "GET /source/{sourceId}/{type}"
+  ]
+}

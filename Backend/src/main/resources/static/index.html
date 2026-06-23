@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABF Adaptive Study & RAG Platform</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- ── 1. Auth Panel (Login / Register) ──────────────────────────────── -->
+    <div id="authPanel" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 id="authTitle">Welcome Back</h1>
+                <p id="authSubtitle">Sign in to your adaptive learning workspace</p>
+            </div>
+            
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="usernameInput">Username</label>
+                    <input type="text" id="usernameInput" class="form-input" placeholder="e.g. hopekumar" required minlength="3">
+                </div>
+                
+                <div class="form-group">
+                    <label for="passwordInput">Password</label>
+                    <input type="password" id="passwordInput" class="form-input" placeholder="••••••••" required minlength="6">
+                </div>
+                
+                <div class="form-group" id="roleGroup" style="display: none;">
+                    <label for="roleInput">Account Type</label>
+                    <select id="roleInput" class="form-input">
+                        <option value="STUDENT">Student</option>
+                        <option value="TEACHER">Teacher</option>
+                        <option value="ADMIN">Administrator</option>
+                    </select>
+                </div>
+                
+                <button type="submit" id="authSubmitBtn" class="btn-primary">Sign In</button>
+            </form>
+            
+            <div class="auth-switch">
+                <span id="authSwitchText">Don't have an account?</span>
+                <a href="#" id="authSwitchLink">Create one</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── 2. Main Dashboard Application ─────────────────────────────────── -->
+    <div id="appPanel" class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside>
+            <div class="brand-section">
+                <div class="brand-logo"><i class="fa-solid fa-brain"></i></div>
+                <div class="brand-name">ABF Tutor</div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active" data-tab="chatTab"><i class="fa-solid fa-message"></i> AI Chat Tutor</li>
+                <li class="nav-item" data-tab="sourcesTab"><i class="fa-solid fa-folder-open"></i> Study Sources</li>
+                <li class="nav-item" data-tab="quizTab"><i class="fa-solid fa-circle-question"></i> Adaptive Quiz</li>
+                <li class="nav-item" data-tab="analyticsTab"><i class="fa-solid fa-chart-line"></i> Performance</li>
+                <li class="nav-item" data-tab="toolsTab"><i class="fa-solid fa-wand-magic-sparkles"></i> Study Tools</li>
+            </ul>
+            
+            <div class="sidebar-scroll">
+                <div class="sidebar-title">Active Sources</div>
+                <div id="sidebarSourcesList" class="list-container">
+                    <!-- Loaded via JS -->
+                </div>
+                
+                <div class="sidebar-title">Chat Threads</div>
+                <div id="sidebarSessionsList" class="list-container">
+                    <!-- Loaded via JS -->
+                </div>
+            </div>
+            
+            <div class="user-profile-section">
+                <div class="user-info">
+                    <h4 id="userProfileName">Username</h4>
+                    <p id="userProfileRole">STUDENT</p>
+                </div>
+                <button class="logout-btn" id="logoutBtn" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main>
+            <header>
+                <h2 id="currentTabTitle">AI Chat Tutor</h2>
+                <div class="notification-trigger">
+                    <i class="fa-regular fa-bell" style="font-size: 1.25rem; cursor: pointer; color: var(--text-secondary);"></i>
+                </div>
+            </header>
+
+            <!-- ── Tab 1: AI Chat Tutor ──────────────────────────────────────── -->
+            <div id="chatTab" class="tab-panel active">
+                <div class="chat-container">
+                    <div class="chat-history-box">
+                        <div id="chatMessages" class="chat-messages">
+                            <div class="chat-bubble ai">
+                                Hello! I'm your AI learning tutor. Ask me any question, or upload document materials in the **Study Sources** tab to start source-grounded learning sessions!
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input-bar">
+                            <textarea id="chatInput" class="chat-input" placeholder="Type a message or follow-up question..."></textarea>
+                            <button id="chatSendBtn" class="chat-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Tab 2: Study Sources Ingestion ──────────────────────────────── -->
+            <div id="sourcesTab" class="tab-panel">
+                <div class="upload-grid">
+                    
+                    <!-- File Ingestion Dropzone -->
+                    <div class="upload-card" id="dropzone">
+                        <input type="file" id="fileInput" style="display: none;" accept=".pdf,.docx,.txt,.png,.jpg,.jpeg">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <h3>Ingest Study File</h3>
+                        <p style="color: var(--text-muted); margin-top: 10px; font-size: 0.9rem;">
+                            Drag & drop or click to upload PDF, DOCX, TXT, or Image (PNG/JPG) notes.<br>
+                            Size limit: 15MB.
+                        </p>
+                    </div>
+
+                    <!-- URL Web Scraper -->
+                    <div class="url-input-card">
+                        <h3>Ingest Web Article</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">
+                            Parse and extract content from documentation pages or educational blog URLs.
+                        </p>
+                        <div class="form-group">
+                            <label for="urlInput">Article URL</label>
+                            <input type="url" id="urlInput" class="form-input" placeholder="https://example.com/concept-guide">
+                        </div>
+                        <button id="urlIngestBtn" class="btn-primary"><i class="fa-solid fa-globe"></i> Scrape & Parse</button>
+                    </div>
+                </div>
+
+                <h3 style="margin: 32px 0 16px;">Source Library</h3>
+                <div id="sourcesLibraryGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                    <!-- Filled via JS -->
+                </div>
+            </div>
+
+            <!-- ── Tab 3: Study Quiz Panel ────────────────────────────────────── -->
+            <div id="quizTab" class="tab-panel">
+                <div class="quiz-wrapper">
+                    
+                    <!-- Config Screen -->
+                    <div class="quiz-setup" id="quizSetupScreen">
+                        <h3 style="margin-bottom: 16px;">Adaptive Quiz Generator</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 0.95rem;">
+                            Generate personalized Multiple-Choice Questions (MCQ) aligned with Bloom's taxonomy.
+                        </p>
+                        <div class="form-group">
+                            <label for="quizConcept">Topic Concept</label>
+                            <input type="text" id="quizConcept" class="form-input" placeholder="e.g. Polymorphism, BST, Indexes">
+                        </div>
+                        <div class="form-group">
+                            <label for="quizDifficulty">Difficulty Level</label>
+                            <select id="quizDifficulty" class="form-input">
+                                <option value="1">Level 1 - Remembering & Recall</option>
+                                <option value="2" selected>Level 2 - Conceptual Understanding</option>
+                                <option value="3">Level 3 - Practical Application</option>
+                                <option value="4">Level 4 - Analysis & Evaluation</option>
+                            </select>
+                        </div>
+                        <button id="generateQuizBtn" class="btn-primary"><i class="fa-solid fa-graduation-cap"></i> Generate Quiz MCQ</button>
+                    </div>
+
+                    <!-- Question Play Screen -->
+                    <div class="quiz-card" id="quizPlayScreen" style="display: none;">
+                        <div class="quiz-header" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                            <span id="quizBadgeTopic" class="citation-tag">TOPIC</span>
+                            <span id="quizBadgeDifficulty" style="font-size: 0.85rem; color: var(--accent-amber);">Diff 2</span>
+                        </div>
+                        <div class="quiz-question" id="quizQuestionText">
+                            Question text goes here?
+                        </div>
+                        <div class="options-list" id="quizOptionsContainer">
+                            <!-- Filled dynamically -->
+                        </div>
+                        
+                        <div class="quiz-feedback" id="quizFeedbackPanel" style="display: none; margin-top: 30px;">
+                            <h4 id="quizFeedbackTitle" style="margin-bottom: 8px;">Verdict</h4>
+                            <p id="quizFeedbackExplanation">Explanation details...</p>
+                            <button id="nextQuizBtn" class="btn-primary" style="margin-top: 20px; max-width: 200px;">Solve Another</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ── Tab 4: Performance Analytics ───────────────────────────────── -->
+            <div id="analyticsTab" class="tab-panel">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-title">Streak Counter</span>
+                        <span class="stat-value" id="statsStreakVal">0 days</span>
+                        <span class="stat-footer"><i class="fa-solid fa-fire" style="color: var(--accent-amber);"></i> Daily study streak</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-title">Accuracy Rate</span>
+                        <span class="stat-value" id="statsAccuracyVal">0%</span>
+                        <span class="stat-footer" id="statsAttemptsVal">0 total responses</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-title">Mastery Level</span>
+                        <span class="stat-value" id="statsMasteryVal">Lvl 1</span>
+                        <span class="stat-footer">Derived from confidence</span>
+                    </div>
+                </div>
+
+                <div class="analytics-content">
+                    
+                    <!-- Strengths and Weaknesses -->
+                    <div class="mastery-table-card">
+                        <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-list-check" style="color: var(--accent-emerald);"></i> Topic Mastery Map</h3>
+                        <div id="topicMasteryContainer" style="display: flex; flex-direction: column; gap: 12px;">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+
+                    <!-- AI insights -->
+                    <div class="ai-insights-card">
+                        <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--accent-violet);"></i> Personal Study Advice</h3>
+                        <div class="insight-text" id="aiInsightContainer">
+                            Generating personalized performance highlights. Solve a few quiz answers to initialize advisor tips...
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ── Tab 5: Generative Study Tools ─────────────────────────────── -->
+            <div id="toolsTab" class="tab-panel">
+                <div class="tools-header">
+                    <h3>Generative Study Tools</h3>
+                    <div class="source-selector">
+                        <label for="toolsSourceSelect"><i class="fa-solid fa-file-pdf"></i> Active Source:</label>
+                        <select id="toolsSourceSelect">
+                            <option value="">Select a source document...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="tools-layout">
+                    
+                    <!-- ── Summary Tool ── -->
+                    <div class="tool-section">
+                        <div class="tool-section-header">
+                            <h3><i class="fa-solid fa-file-lines"></i> Executive Summary</h3>
+                            <button class="btn-primary" id="generateSummaryBtn" style="width: auto; padding: 10px 20px;">Generate</button>
+                        </div>
+                        <div id="summaryContent" style="display: none;">
+                            <!-- Populated dynamically -->
+                        </div>
+                        <div id="summaryPlaceholder" class="tool-loading" style="display: none;">
+                            <div class="spinner"></div>
+                            <p>Analyzing document context...</p>
+                        </div>
+                        <div id="summaryEmpty" style="color: var(--text-muted); text-align: center; padding: 40px;">
+                            Select a source and click Generate to create an executive summary.
+                        </div>
+                    </div>
+
+                    <!-- ── Flashcards Tool ── -->
+                    <div class="tool-section">
+                        <div class="tool-section-header">
+                            <h3><i class="fa-solid fa-layer-group"></i> Smart Flashcards</h3>
+                            <button class="btn-primary" id="generateFlashcardsBtn" style="width: auto; padding: 10px 20px;">Generate</button>
+                        </div>
+                        <div id="flashcardsContent" style="display: none;">
+                            <div class="flashcard-container">
+                                <div class="flashcard" id="activeFlashcard">
+                                    <div class="flashcard-face flashcard-front">
+                                        <div class="flashcard-text" id="fcFrontText">Front</div>
+                                        <div style="position: absolute; bottom: 20px; font-size: 0.8rem; color: var(--text-muted);">Click to flip</div>
+                                    </div>
+                                    <div class="flashcard-face flashcard-back">
+                                        <div class="flashcard-text" id="fcBackText">Back</div>
+                                        <div style="position: absolute; bottom: 20px; font-size: 0.8rem; color: var(--text-muted);">Click to flip</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flashcard-controls">
+                                <button class="flashcard-btn" id="fcPrevBtn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+                                <span id="fcProgress" style="font-weight: 600;">1 / 10</span>
+                                <button class="flashcard-btn" id="fcNextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        <div id="flashcardsPlaceholder" class="tool-loading" style="display: none;">
+                            <div class="spinner"></div>
+                            <p>Extracting key concepts...</p>
+                        </div>
+                        <div id="flashcardsEmpty" style="color: var(--text-muted); text-align: center; padding: 40px;">
+                            Generate interactive flashcards for spaced repetition study.
+                        </div>
+                    </div>
+
+                    <!-- ── Mind Map Tool ── -->
+                    <div class="tool-section">
+                        <div class="tool-section-header">
+                            <h3><i class="fa-solid fa-network-wired"></i> Concept Mind Map</h3>
+                            <button class="btn-primary" id="generateMindmapBtn" style="width: auto; padding: 10px 20px;">Generate</button>
+                        </div>
+                        <div id="mindmapContent" style="display: none;">
+                            <div class="mindmap-container">
+                                <svg id="mindmapSvg" class="mindmap-svg" width="100%" height="100%"></svg>
+                            </div>
+                        </div>
+                        <div id="mindmapPlaceholder" class="tool-loading" style="display: none;">
+                            <div class="spinner"></div>
+                            <p>Mapping topic relationships...</p>
+                        </div>
+                        <div id="mindmapEmpty" style="color: var(--text-muted); text-align: center; padding: 40px;">
+                            Generate a visual hierarchy of concepts from this document.
+                        </div>
+                    </div>
+
+                    <!-- ── Audio Overview Tool ── -->
+                    <div class="tool-section">
+                        <div class="tool-section-header">
+                            <h3><i class="fa-solid fa-podcast"></i> Audio Overview</h3>
+                            <button class="btn-primary" id="generateAudioBtn" style="width: auto; padding: 10px 20px;">Generate</button>
+                        </div>
+                        <div id="audioContent" style="display: none;">
+                            <div class="audio-player-container">
+                                <i class="fa-solid fa-headphones audio-icon" id="audioPlayingIcon" style="animation: none;"></i>
+                                <h4 id="audioTitle" style="color: var(--text-primary);">Document Overview</h4>
+                                <div class="audio-controls">
+                                    <button class="audio-btn-main" id="audioPlayBtn"><i class="fa-solid fa-play"></i></button>
+                                </div>
+                                <audio id="audioPlayer" style="display: none;"></audio>
+                                <div class="audio-script" id="audioScriptBox">
+                                    Generating script...
+                                </div>
+                            </div>
+                        </div>
+                        <div id="audioPlaceholder" class="tool-loading" style="display: none;">
+                            <div class="spinner"></div>
+                            <p>Synthesizing audio overview...</p>
+                        </div>
+                        <div id="audioEmpty" style="color: var(--text-muted); text-align: center; padding: 40px;">
+                            Generate a synthesized audio discussion of the key topics.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ── Citation Viewer Modal ──────────────────────────────────────── -->
+    <div id="citationModal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" id="modalCloseBtn">&times;</button>
+            <h3 id="modalTitle" style="margin-bottom: 12px; color: var(--accent-amber);">Citation Reference</h3>
+            <p id="modalPage" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">Source: File, Page X</p>
+            <div id="modalSnippet" style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); padding: 20px; border-radius: 8px; line-height: 1.6; max-height: 350px; overflow-y: auto; white-space: pre-wrap;">
+                Text snippet content...
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Hub -->
+    <div class="notification-container" id="notificationHub"></div>
+
+    <script src="/app.js"></script>
+</body>
+</html>

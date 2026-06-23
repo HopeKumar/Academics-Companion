@@ -1,0 +1,1855 @@
+<!-- LOGIN SCREEN -->
+<div class="auth-page" *ngIf="!isLoggedIn">
+  <div class="auth-left">
+    <div class="auth-left-overlay"></div>
+    <div class="auth-left-content">
+      <div class="auth-logo">
+        <svg viewBox="0 0 24 24" class="auth-logo-icon" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+          <path d="M12 6v6l4-2z" />
+        </svg>
+        <div class="auth-logo-text">
+          <h1>Campus LM</h1>
+          <span>AI STUDY COMPANION</span>
+        </div>
+      </div>
+
+      <div class="auth-hero-text">
+        <ng-container *ngIf="authMode === 'login'">
+          <h1 class="auth-left-title">Welcome back!</h1>
+          <p class="auth-left-desc">Log in to access your personalized AI study companion and continue your learning
+            journey.</p>
+        </ng-container>
+
+        <ng-container *ngIf="authMode === 'register'">
+          <h1 class="auth-left-title">Start your<br>smarter learning<br>journey</h1>
+          <p class="auth-left-desc">Create your account and unlock personalized AI-powered insights, resources, and
+            more.</p>
+        </ng-container>
+      </div>
+
+      <div class="auth-features">
+        <div class="auth-feature">
+          <div class="auth-feature-icon-wrap">
+            <svg class="auth-feature-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72l5 2.73 5-2.73v3.72z" />
+            </svg>
+          </div>
+          <div class="auth-feature-text">
+            <h3>Personalized Learning</h3>
+            <p>Get AI-powered insights tailored to you.</p>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon-wrap">
+            <svg class="auth-feature-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+            </svg>
+          </div>
+          <div class="auth-feature-text">
+            <h3>Track Progress</h3>
+            <p>Monitor your growth and achievements</p>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon-wrap">
+            <svg class="auth-feature-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+            </svg>
+          </div>
+          <div class="auth-feature-text">
+            <h3>Secure & Private</h3>
+            <p>Your data is protected with enterprise-grade security</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-footer">
+        © 2024 Campus LM. All rights reserved.
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <div class="toast-notification" *ngIf="showRegistrationSuccess">
+      Registration Successful! Please sign in to continue.
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <div class="auth-user-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <h2 *ngIf="authMode === 'login'">Welcome back</h2>
+        <h2 *ngIf="authMode === 'register'">Create your account</h2>
+        <p *ngIf="authMode === 'login'">Log in to access your AI study companion</p>
+        <p *ngIf="authMode === 'register'">Join Campus LM and enhance your learning experience with AI.</p>
+      </div>
+
+      <div class="auth-form-container">
+        <!-- Login Form -->
+        <ng-container *ngIf="authMode === 'login'">
+          <div class="auth-form-group">
+            <label>Email Address</label>
+            <div class="auth-input-wrapper">
+              <svg class="auth-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <input type="email" placeholder="student@university.edu" [(ngModel)]="email">
+            </div>
+          </div>
+          <div class="auth-form-group">
+            <label>Password</label>
+            <div class="auth-input-wrapper">
+              <svg class="auth-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input [type]="showPassword ? 'text' : 'password'" placeholder="••••••••" [(ngModel)]="password">
+              <svg *ngIf="!showPassword" class="auth-input-action" (click)="togglePassword()" width="18" height="18"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg *ngIf="showPassword" class="auth-input-action" (click)="togglePassword()" width="18" height="18"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                </path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            </div>
+          </div>
+          <div *ngIf="loginError" class="auth-error">{{ loginError }}</div>
+
+          <div class="auth-form-options">
+            <label class="auth-checkbox">
+              <input type="checkbox" checked>
+              <span>Remember me</span>
+            </label>
+            <a href="#" class="auth-link">Forgot password?</a>
+          </div>
+
+          <button class="auth-primary-btn" (click)="login()">Sign In</button>
+
+          <div class="auth-divider"><span>or</span></div>
+
+          <button class="auth-google-btn" (click)="loginWithGoogle()">
+            <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                fill="#4285F4" />
+              <path
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                fill="#34A853" />
+              <path
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                fill="#FBBC05" />
+              <path
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                fill="#EA4335" />
+            </svg>
+            Sign in with Google
+          </button>
+
+          <div class="auth-switch">
+            Don't have an account? <a href="#" (click)="authMode = 'register'; $event.preventDefault()">Click here to
+              sign up</a>
+          </div>
+        </ng-container>
+
+        <!-- Register Form -->
+        <form *ngIf="authMode === 'register'" [formGroup]="registerForm" (ngSubmit)="register()">
+          <div class="auth-form-group">
+            <label>Full Name</label>
+            <div class="auth-input-wrapper"
+              [class.invalid]="registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid">
+              <svg class="auth-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <input type="text" placeholder="Enter your full name" formControlName="fullName">
+            </div>
+          </div>
+          <div class="auth-form-group">
+            <label>Email Address</label>
+            <div class="auth-input-wrapper"
+              [class.invalid]="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+              <svg class="auth-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <input type="email" placeholder="student@university.edu" formControlName="email">
+            </div>
+          </div>
+          <div class="auth-form-group">
+            <label>Password</label>
+            <div class="auth-input-wrapper"
+              [class.invalid]="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+              <svg class="auth-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input [type]="showPassword ? 'text' : 'password'" placeholder="Create a password"
+                formControlName="password">
+              <svg *ngIf="!showPassword" class="auth-input-action" (click)="togglePassword()" width="18" height="18"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg *ngIf="showPassword" class="auth-input-action" (click)="togglePassword()" width="18" height="18"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                </path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            </div>
+            <div class="auth-helper-text">Use at least 8 characters with a mix of letters, numbers & symbols</div>
+          </div>
+          <div class="auth-form-group">
+            <label>Confirm Password</label>
+            <div class="auth-input-wrapper"
+              [class.invalid]="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid">
+              <svg class="auth-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input [type]="showConfirmPassword ? 'text' : 'password'" placeholder="Confirm your password"
+                formControlName="confirmPassword">
+              <svg *ngIf="!showConfirmPassword" class="auth-input-action" (click)="toggleConfirmPassword()" width="18"
+                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg *ngIf="showConfirmPassword" class="auth-input-action" (click)="toggleConfirmPassword()" width="18"
+                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                </path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            </div>
+          </div>
+
+          <div class="auth-form-options">
+            <label class="auth-checkbox">
+              <input type="checkbox" formControlName="terms">
+              <span>I agree to the <a href="#" class="auth-link">Terms of Service</a> and <a href="#"
+                  class="auth-link">Privacy Policy</a></span>
+            </label>
+          </div>
+
+          <button type="submit" class="auth-primary-btn" style="margin-top: 15px;">Create Account</button>
+
+          <div class="auth-divider"><span>or</span></div>
+
+          <button type="button" class="auth-google-btn" (click)="loginWithGoogle()">
+            <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                fill="#4285F4" />
+              <path
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                fill="#34A853" />
+              <path
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                fill="#FBBC05" />
+              <path
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                fill="#EA4335" />
+            </svg>
+            Sign up with Google
+          </button>
+
+          <div class="auth-switch">
+            Already have an account? <a href="#" (click)="authMode = 'login'; $event.preventDefault()">Sign in here</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="google-login-modal" *ngIf="showGoogleLoginModal">
+  <div class="google-login-content">
+    <div class="google-header">
+      <svg width="40" height="40" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+          fill="#4285F4" />
+        <path
+          d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+          fill="#34A853" />
+        <path
+          d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+          fill="#FBBC05" />
+        <path
+          d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+          fill="#EA4335" />
+      </svg>
+      <h3>Sign in with Google</h3>
+      <p>Choose an account to continue to Campus LM</p>
+    </div>
+    <div class="google-accounts">
+      <div class="google-account" (click)="selectGoogleAccount('personal@gmail.com')">
+        <div class="g-avatar">P</div>
+        <div class="g-info">
+          <div class="g-name">Personal Account</div>
+          <div class="g-email">personal@gmail.com</div>
+        </div>
+      </div>
+      <div class="google-account" (click)="selectGoogleAccount('student@university.edu')">
+        <div class="g-avatar" style="background: #1a73e8">S</div>
+        <div class="g-info">
+          <div class="g-name">Student Account</div>
+          <div class="g-email">student@university.edu</div>
+        </div>
+      </div>
+    </div>
+    <div class="google-footer">
+      <button class="g-cancel" (click)="closeGoogleLogin()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="isLoggedIn">
+  <!-- GLOBAL SHELL — always rendered -->
+  <div class="shell">
+    <header class="navbar">
+      <div class="navbar-left">
+        <ng-container *ngIf="currentView === 'home'">
+          <span class="brand-name">
+            <h1>Campus LM</h1>
+          </span>
+        </ng-container>
+        <ng-container *ngIf="currentView !== 'home'">
+          <span class="brand-name" (click)="goBack()" style="cursor: pointer;">
+            <h1>Campus LM</h1>
+          </span>
+        </ng-container>
+      </div>
+
+      <div class="navbar-right">
+        <div class="file-avatar-wrapper">
+          <span class="file-badge file-avatar" style="background: transparent; border: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <polyline points="10 9 9 9 8 9" />
+            </svg>
+          </span>
+          <span class="file-tooltip">{{ uploadedFileName ? uploadedFileName : 'No Document Selected' }}</span>
+        </div>
+
+        <!-- Profile button -->
+        <div class="profile-container" #profileContainer>
+          <button class="profile-btn" (click)="toggleProfileMenu()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </button>
+
+          <!-- Profile dropdown -->
+          <div class="profile-dropdown" *ngIf="showProfileMenu">
+            <div class="profile-header">
+              <div class="profile-avatar-large">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              <div class="profile-info">
+                <span class="profile-name">{{ userName }}</span>
+                <span class="profile-email">{{ email }}</span>
+                <span class="profile-programme" *ngIf="selectedProgramme" style="font-size: 12px; color: #1a2f6e; margin-top: 4px; font-weight: 600;">{{ selectedProgramme }}</span>
+              </div>
+              <button class="profile-close-btn" (click)="showProfileMenu = false" title="Close menu">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="profile-stats">
+              <div class="stat-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2f6e" stroke-width="1.5">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                </svg>
+                <span class="stat-value">{{ totalDocuments }}</span>
+                <span class="stat-label">Documents</span>
+              </div>
+              <div class="stat-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2f6e" stroke-width="1.5">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                </svg>
+                <span class="stat-value">{{ discussions.length }}</span>
+                <span class="stat-label">Discussions</span>
+              </div>
+              <div class="stat-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2f6e" stroke-width="1.5">
+                  <circle cx="12" cy="8" r="7" />
+                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                </svg>
+                <span class="stat-value">{{ averageScore }}%</span>
+                <span class="stat-label">Avg Score</span>
+              </div>
+            </div>
+
+            <div class="profile-links">
+              <button class="profile-link" (click)="navigateToDashboard()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="8" r="7" />
+                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                </svg>
+                Progress Report
+              </button>
+            </div>
+
+            <div class="profile-footer">
+              <button class="logout-link" (click)="logout()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="body-row">
+      <aside class="sources-panel" [class.collapsed]="sourcesPanelCollapsed">
+        <div class="sources-header">
+          <span class="sources-title" *ngIf="!sourcesPanelCollapsed">Program Info</span>
+          <button class="sources-collapse-btn" (click)="toggleSourcesPanel()"
+            [title]="sourcesPanelCollapsed ? 'Expand panel' : 'Collapse panel'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <line x1="9" y1="3" x2="9" y2="21" />
+            </svg>
+          </button>
+        </div>
+
+        <ng-container *ngIf="!sourcesPanelCollapsed">
+          <!-- TOP HALF: Dropdowns -->
+          <div style="flex-shrink: 0; display: flex; flex-direction: column;">
+            <div class="sidebar-dropdowns" style="margin: 0;">
+              <div class="custom-dropdown">
+                <div class="custom-dropdown-header" (click)="toggleDropdown('programmes')">
+                  <span class="dropdown-label">{{ selectedProgramme || 'Select Programme' }}</span>
+                  <svg [class.open]="openDropdown === 'programmes'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </div>
+                <div class="custom-dropdown-list" *ngIf="openDropdown === 'programmes'">
+                  <ng-container *ngFor="let group of programmes">
+                    <div class="dropdown-category-header">{{ group.category }}</div>
+                    <div class="custom-dropdown-item" *ngFor="let prog of group.items" (click)="selectProgramme(prog)">
+                      {{ prog }}
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="custom-dropdown">
+                <div class="custom-dropdown-header" (click)="toggleDropdown('courses')">
+                  <span class="dropdown-label">{{ selectedCourse || 'Select Course' }}</span>
+                  <svg [class.open]="openDropdown === 'courses'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </div>
+                <div class="custom-dropdown-list" *ngIf="openDropdown === 'courses'">
+                  <ng-container *ngFor="let group of courses">
+                    <div class="dropdown-category-header">{{ group.category }}</div>
+                    <div class="custom-dropdown-item" *ngFor="let course of group.items" (click)="selectCourse(course)">
+                      {{ course }}
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="custom-dropdown">
+                <div class="custom-dropdown-header" (click)="toggleDropdown('units')">
+                  <span class="dropdown-label">{{ selectedUnit || 'Select Unit' }}</span>
+                  <svg [class.open]="openDropdown === 'units'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </div>
+                <div class="custom-dropdown-list" *ngIf="openDropdown === 'units'">
+                  <div class="custom-dropdown-item" *ngFor="let unit of units" (click)="selectUnit(unit)">
+                    {{ unit }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div style="height: 1px; background: #e8ecf4; margin: 16px -12px; flex-shrink: 0;"></div>
+
+          <!-- BOTTOM HALF: Loaded Files -->
+          <div style="flex: 1; display: flex; flex-direction: column; min-height: 0;">
+            <div class="sources-header" style="margin-bottom: 12px; margin-top: 0;">
+              <span class="sources-title">Loaded Files</span>
+            </div>
+
+          <div class="sources-search-wrap">
+            <svg class="sources-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input class="sources-search" type="text" [(ngModel)]="sourcesSearchQuery" placeholder="Search files..." />
+          </div>
+
+
+
+          <div class="sources-list">
+            <div class="source-item" *ngFor="let src of filteredSources"
+              [class.selected]="uploadedFileName === src.name" (click)="openDocumentFeatures(src)">
+              <div class="source-item-left">
+                <div class="source-file-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#e53935">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                  </svg>
+                </div>
+                <span class="source-name">{{ src.name }}</span>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center">
+                <button class="remove-source-btn" (click)="confirmRemoveSource(src, $event)" title="Remove file" style="
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    color: #888;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 2px;
+                  ">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 6h18" />
+                    <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="sources-empty" *ngIf="uploadedSources.length === 0">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+              <p>No files loaded yet.<br />Upload a document to begin.</p>
+            </div>
+          </div>
+          </div>
+        </ng-container>
+
+        <div class="sources-collapsed-icons" *ngIf="sourcesPanelCollapsed">
+          <button class="collapsed-add-btn" (click)="sourcesPanelCollapsed = false" title="Expand">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+          </button>
+          <div class="collapsed-source-dot" *ngFor="let src of uploadedSources.slice(0, 6)" [title]="src.name">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#e53935">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+          </div>
+        </div>
+      </aside>
+      <div class="content-area">
+        <!-- DASHBOARD VIEW -->
+        <main class="dashboard-main" *ngIf="currentView === 'dashboard'">
+          <div class="dashboard-header" style="padding: 0 24px;">
+            <button class="back-btn" (click)="goBack()" style="margin-bottom: 16px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              Back
+            </button>
+            <h2 class="section-title">Summary of Progress</h2>
+            <p class="section-sub">
+              Overview of your learning journey across all uploaded documents
+            </p>
+          </div>
+
+          <div class="dashboard-summary-cards">
+            <div class="dash-card">
+              <span class="dash-num">{{ totalDocuments }}</span>
+              <span class="dash-label">Total Documents</span>
+            </div>
+
+            <div class="dash-card">
+              <span class="dash-num">{{ averageScore }}%</span>
+              <span class="dash-label">Average Quiz Score</span>
+            </div>
+          </div>
+
+          <div class="dashboard-charts">
+            <div class="dash-chart-box">
+              <div class="donut-chart" [style.--pct]="totalDocuments ? (completedDocuments / totalDocuments) * 100 : 0"
+                style="--color: #4caf50">
+                <span>{{
+                  totalDocuments ? Math.round((completedDocuments / totalDocuments) * 100) : 0
+                  }}%</span>
+              </div>
+              <div class="dash-chart-label">
+                <span class="dash-chart-val">{{ completedDocuments }}</span>
+                <span class="dash-chart-text">Completed</span>
+              </div>
+            </div>
+            <div class="dash-chart-box">
+              <div class="donut-chart" [style.--pct]="totalDocuments ? (inProgressDocuments / totalDocuments) * 100 : 0"
+                style="--color: #2196f3">
+                <span>{{
+                  totalDocuments ? Math.round((inProgressDocuments / totalDocuments) * 100) : 0
+                  }}%</span>
+              </div>
+              <div class="dash-chart-label">
+                <span class="dash-chart-val">{{ inProgressDocuments }}</span>
+                <span class="dash-chart-text">In progress</span>
+              </div>
+            </div>
+            <div class="dash-chart-box">
+              <div class="donut-chart" [style.--pct]="totalDocuments ? (notStartedDocuments / totalDocuments) * 100 : 0"
+                style="--color: #333333">
+                <span>{{
+                  totalDocuments ? Math.round((notStartedDocuments / totalDocuments) * 100) : 0
+                  }}%</span>
+              </div>
+              <div class="dash-chart-label">
+                <span class="dash-chart-val">{{ notStartedDocuments }}</span>
+                <span class="dash-chart-text">Not started</span>
+              </div>
+            </div>
+            <div class="dash-chart-box">
+              <div class="donut-chart" [style.--pct]="averageScore" style="--color: #e53935">
+                <span>{{ averageScore }}%</span>
+              </div>
+              <div class="dash-chart-label">
+                <span class="dash-chart-val">{{ averageScore }}%</span>
+                <span class="dash-chart-text">Avg Score</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-table-wrap">
+            <table class="dashboard-table">
+              <thead>
+                <tr>
+                  <th>Document Name</th>
+                  <th>Status</th>
+                  <th>Progress</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let doc of uploadedSources">
+                  <td>{{ doc.name }}</td>
+                  <td>
+                    <span class="status-badge" [ngClass]="doc.status.toLowerCase().replace(' ', '-')">
+                      <svg *ngIf="doc.status === 'Completed'" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                      <svg *ngIf="doc.status === 'In progress'" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                      <svg *ngIf="doc.status === 'Not started'" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                      {{ doc.status }}
+                    </span>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="doc.status === 'In progress' && doc.progressMessage; else normalProgress">
+                      {{ doc.progressMessage }}
+                    </ng-container>
+                    <ng-template #normalProgress>
+                      {{ doc.progress }}%
+                    </ng-template>
+                  </td>
+                  <td>{{ doc.score !== null ? doc.score + '%' : '-' }}</td>
+                </tr>
+                <tr *ngIf="uploadedSources.length === 0">
+                  <td colspan="4" style="text-align: center; color: #888; padding: 24px">
+                    No documents uploaded yet.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </main>
+
+        <!-- HOME VIEW -->
+        <main class="home-main" *ngIf="currentView === 'home'">
+          <div class="upload-card" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+            <h2 class="home-title">
+              Transform Your Documents into<br /><span>Interactive Learning Materials</span>
+            </h2>
+            <p class="home-subtitle">
+              Upload any PDF, text, or Word document to automatically generate audio summaries,
+              flashcards, mind maps, quizzes, and discussion prompts
+            </p>
+            <div class="drop-zone" [class.dragover]="isDragging" (click)="$event.stopPropagation(); triggerFileInput()">
+              <div class="drop-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1a2f6e" stroke-width="1.5">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+              </div>
+              <p class="drop-label">Click to upload your document</p>
+              <p class="drop-sub">PDF, Word, PPT, Excel, CSV, TXT up to 10MB</p>
+              <input type="file" #fileInput accept=".pdf,.txt,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.csv"
+                (change)="onFileSelected($event)" style="display: none" />
+            </div>
+          </div>
+          <div class="features-grid">
+            <div class="feature-item" *ngFor="let feature of features" (click)="navigateToFeature(feature.id)">
+              <div class="feature-icon" [innerHTML]="feature.icon"></div>
+              <div class="feature-text">
+                <span class="feature-title">{{ feature.title }}</span>
+                <span class="feature-desc">{{ feature.desc }}</span>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- LEARNING VIEWS -->
+        <ng-container *ngIf="currentView !== 'home' && currentView !== 'dashboard'">
+          <nav class="tab-nav" [class.sidebar-open]="!sourcesPanelCollapsed">
+            <button class="tab-item" *ngFor="let tab of tabs" [class.active]="currentView === tab.id"
+              (click)="switchTab(tab.id)">
+              {{ tab.label }}
+            </button>
+          </nav>
+
+          <!-- SUMMARY -->
+          <div class="tab-content summary-chat-view" *ngIf="currentView === 'summary'">
+            <div class="summary-scroll-area">
+              <!-- Header -->
+              <div class="summary-page-header">
+                <div>
+                  <button class="back-btn" (click)="goBack()" style="margin-bottom: 16px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Back
+                  </button>
+                  <h2 class="section-title">Summary</h2>
+                  <p class="section-sub">AI-generated insights from your document</p>
+                </div>
+                <span class="summary-ai-badge">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                    <path d="M2 17l10 5 10-5" />
+                    <path d="M2 12l10 5 10-5" />
+                  </svg>
+                  AI Generated
+                </span>
+              </div>
+
+              <div *ngIf="isSummaryLoading" class="loading-container" style="text-align: center; padding: 40px; color: #666;">
+                <div class="spinner-icon" style="margin: 0 auto 12px; border: 3px solid #f3f3f3; border-top: 3px solid #1a2f6e; border-radius: 50%; width: 24px; height: 24px;"></div>
+                <p>Loading summary...</p>
+              </div>
+
+              <ng-container *ngIf="!isSummaryLoading">
+                <div class="main-summary-section" *ngIf="summaryOverview">
+                  <p class="main-summary-text">{{ summaryOverview }}</p>
+                </div>
+
+                <!-- Key Points card -->
+                <div class="summary-detail-card" *ngIf="summaryKeyPoints && summaryKeyPoints.length > 0">
+                  <div class="summary-card-header">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2f6e" stroke-width="2">
+                      <polyline points="9 11 12 14 22 4" />
+                      <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                    </svg>
+                    <span class="summary-card-title">Key Points</span>
+                  </div>
+                  <ul class="summary-key-points">
+                    <li *ngFor="let point of summaryKeyPoints" class="summary-key-point-item">
+                      <span class="summary-bullet"></span>
+                      {{ point }}
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- Takeaways card -->
+                <div class="summary-detail-card" *ngIf="summaryTakeaways && summaryTakeaways.length > 0">
+                  <div class="summary-card-header">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2f6e" stroke-width="2">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    <span class="summary-card-title">Important Takeaways</span>
+                  </div>
+                  <div class="summary-takeaways-list">
+                    <div class="summary-takeaway-item" *ngFor="let item of summaryTakeaways; let i = index">
+                      <span class="summary-takeaway-num">{{ i + 1 }}</span>
+                      <span class="summary-takeaway-text">{{ item }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="!summaryOverview && (!summaryKeyPoints || summaryKeyPoints.length === 0) && (!summaryTakeaways || summaryTakeaways.length === 0)" style="text-align: center; padding: 40px; color: #666;">
+                  <p>Empty summary</p>
+                </div>
+              </ng-container>
+
+              <!-- Chat Messages -->
+              <div class="chat-messages-container">
+                <div *ngFor="let msg of chatMessages || []" class="chat-message" [ngClass]="msg.role">
+                  <div class="chat-bubble">
+                    {{ msg.content }}
+                  </div>
+                </div>
+                <div *ngIf="isGeneratingResponse" class="chat-message assistant">
+                  <div class="chat-bubble loading">
+                    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Input Bar -->
+            <div class="chat-input-container">
+              <input type="text" class="chat-input"
+                placeholder="Ask anything (e.g. 'Make it shorter', 'Explain simply')..." [(ngModel)]="chatInput"
+                (keyup.enter)="sendChatMessage()" />
+              <button class="chat-send-btn" (click)="sendChatMessage()"
+                [disabled]="!chatInput.trim() || isGeneratingResponse">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <!-- AUDIO -->
+          <div class="tab-content audio-tab-content" *ngIf="currentView === 'audio'">
+            <button class="back-btn" (click)="goBack()" style="margin-bottom: 16px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              Back
+            </button>
+            <h2 class="section-title">Audio Overview</h2>
+
+            <div *ngIf="isPodcastLoading" class="audio-loading-state">
+              <div class="audio-loading-spinner"></div>
+              <p>Generating your audio overview...</p>
+              <span>AI is crafting a podcast-style summary</span>
+            </div>
+
+            <ng-container *ngIf="!isPodcastLoading">
+
+              <div class="podcast-studio-layout">
+                <div class="podcast-meta-pane">
+                  <div class="podcast-meta-card">
+                    <div class="podcast-meta-icon">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3b66b5" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
+                      </svg>
+                    </div>
+                    <span class="podcast-tag">AI PODCAST</span>
+                    <h3 class="podcast-meta-title">{{ activeDocument?.name || "Audio Overview" }}</h3>
+                    <p class="podcast-meta-hosts">Hosted by Maya &amp; Alex &middot; {{ formatTime(audioDuration) }}</p>
+                  </div>
+                  <div class="podcast-hosts-card">
+                    <span class="podcast-card-label">AI HOSTS</span>
+                    <div class="host-row">
+                      <div class="host-avatar host-avatar-1">MY</div>
+                      <div class="host-info">
+                        <span class="host-name">Maya</span>
+                        <span class="host-role">Lead Host</span>
+                      </div>
+                    </div>
+                    <div class="host-row">
+                      <div class="host-avatar host-avatar-2">AL</div>
+                      <div class="host-info">
+                        <span class="host-name">Alex</span>
+                        <span class="host-role">Co-Host</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="podcast-player-pane">
+                  <div class="waveform-card" [class.playing]="isPlaying">
+                    <div class="waveform-bars">
+                      <div class="waveform-bar" *ngFor="let _ of [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]"></div>
+                    </div>
+                  </div>
+
+                  <div class="audio-progress-section">
+                    <span class="audio-time-label">{{ formatTime(audioProgress) }}</span>
+                    <div class="audio-progress-track" (click)="seekAudio($event)">
+                      <div class="audio-progress-fill" [style.width.%]="audioDuration > 0 ? (audioProgress / audioDuration) * 100 : 0"></div>
+                    </div>
+                    <span class="audio-time-label">{{ formatTime(audioDuration) }}</span>
+                  </div>
+
+                  <div class="audio-controls-row">
+                    <div class="audio-mode-toggle">
+                      <span class="audio-mode-label" [class.active]="!isPodcastMode">Script</span>
+                      <div class="custom-toggle" [class.on]="isPodcastMode" (click)="toggleAudioMode()"
+                           [style.opacity]="isGeneratingAudio ? '0.5' : '1'"
+                           [style.cursor]="isGeneratingAudio ? 'not-allowed' : 'pointer'">
+                        <div class="toggle-knob"></div>
+                      </div>
+                      <span class="audio-mode-label" [class.active]="isPodcastMode">Podcast</span>
+                    </div>
+                    <button class="play-btn-large" (click)="togglePlay()">
+                      <svg *ngIf="!isPlaying" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                      </svg>
+                      <svg *ngIf="isPlaying" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" />
+                      </svg>
+                    </button>
+                    <div class="audio-action-btns">
+                      <button class="audio-action-btn" (click)="generateAudio()" [disabled]="isGeneratingAudio">
+                        <svg *ngIf="!isGeneratingAudio" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                        </svg>
+                        <svg *ngIf="isGeneratingAudio" class="spinner-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
+                        </svg>
+                        {{ isGeneratingAudio ? "Generating..." : "Generate" }}
+                      </button>
+                      <button class="audio-action-btn" (click)="downloadAudio()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                          <polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Download
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="speed-pills-row">
+                    <span class="speed-pills-label">Speed</span>
+                    <div class="speed-pills">
+                      <button class="speed-pill" [class.active]="playbackSpeed === 0.75" (click)="setPlaybackSpeed(0.75)">0.75x</button>
+                      <button class="speed-pill" [class.active]="playbackSpeed === 1.0" (click)="setPlaybackSpeed(1.0)">1x</button>
+                      <button class="speed-pill" [class.active]="playbackSpeed === 1.25" (click)="setPlaybackSpeed(1.25)">1.25x</button>
+                      <button class="speed-pill" [class.active]="playbackSpeed === 1.5" (click)="setPlaybackSpeed(1.5)">1.5x</button>
+                      <button class="speed-pill" [class.active]="playbackSpeed === 2.0" (click)="setPlaybackSpeed(2.0)">2x</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="transcript-section" *ngIf="podcastScript && podcastScript.length > 0">
+                <h3 class="transcript-heading">Transcript</h3>
+                <div class="speaker-bubbles-list">
+                  <div class="speaker-card"
+                       *ngFor="let seg of podcastScript; let i = index"
+                       [id]="'speaker-card-' + i"
+                       [class.host1]="seg.speaker === 'Host1'"
+                       [class.host2]="seg.speaker === 'Host2'">
+                    <div class="speaker-avatar">{{ seg.label }}</div>
+                    <div class="speaker-bubble">
+                      <span class="speaker-name">{{ seg.speaker === 'Host1' ? 'Maya' : 'Alex' }}</span>
+                      <p class="speaker-line">{{ seg.line }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="transcript-section" *ngIf="(!podcastScript || podcastScript.length === 0) && transcriptParagraphs && transcriptParagraphs.length > 0">
+                <h3 class="transcript-heading">Transcript</h3>
+                <div class="transcript-body">
+                  <p *ngFor="let para of transcriptParagraphs">{{ para }}</p>
+                </div>
+              </div>
+
+              <ng-container *ngIf="(!transcriptParagraphs || transcriptParagraphs.length === 0) && (!podcastScript || podcastScript.length === 0)">
+                <div class="audio-empty-state">
+                  <div class="audio-empty-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3b66b5" stroke-width="1.5" style="opacity: 0.5;">
+                      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                      <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                      <line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                  </div>
+                  <h4 class="audio-empty-title">No Audio Overview Yet</h4>
+                  <p class="audio-empty-desc">Click <strong>Generate</strong> to create an AI podcast from your document.</p>
+                </div>
+              </ng-container>
+
+              <div *ngIf="showAudioWarning" class="audio-warning-banner">
+                <span>&#9888;</span> Audio is currently generating. Please wait.
+              </div>
+
+            </ng-container>
+
+            <div class="floating-mini-player" [class.visible]="isPlaying">
+              <div class="mini-player-info">
+                <div class="mini-player-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                  </svg>
+                </div>
+                <div class="mini-player-text">
+                  <span class="mini-player-title">{{ activeDocument?.name || "Audio Overview" }}</span>
+                  <span class="mini-player-time">{{ formatTime(audioProgress) }} / {{ formatTime(audioDuration) }}</span>
+                </div>
+              </div>
+              <div class="mini-player-controls">
+                <button class="mini-play-btn" (click)="togglePlay()">
+                  <svg *ngIf="!isPlaying" width="16" height="16" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3" /></svg>
+                  <svg *ngIf="isPlaying" width="16" height="16" viewBox="0 0 24 24" fill="white"><rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" /></svg>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- FLASHCARDS -->
+          <div class="tab-content flashcards-tab-content" *ngIf="currentView === 'flashcards'">
+            <button class="back-btn" (click)="goBack()" style="margin-bottom: 16px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              Back
+            </button>
+            <h2 class="section-title">Flashcards</h2>
+
+            <div *ngIf="isFlashcardsLoading" class="loading-container" style="text-align: center; padding: 40px; color: #666;">
+              <div class="spinner-icon" style="margin: 0 auto 12px; border: 3px solid #f3f3f3; border-top: 3px solid #1a2f6e; border-radius: 50%; width: 24px; height: 24px;"></div>
+              <p>Loading flashcards...</p>
+            </div>
+
+            <ng-container *ngIf="!isFlashcardsLoading">
+              <ng-container *ngIf="filteredFlashcards && filteredFlashcards.length > 0; else noFlashcards">
+                <div class="progress-row">
+                  <span class="progress-label">Card {{ currentCardIndex + 1 }} of {{ filteredFlashcards.length }}</span>
+                  <div class="progress-track">
+                    <div class="progress-fill" [style.width.%]="((currentCardIndex + 1) / filteredFlashcards.length) * 100"></div>
+                  </div>
+                  <span class="progress-pct">{{ Math.round(((currentCardIndex + 1) / filteredFlashcards.length) * 100) }}% Complete</span>
+                </div>
+
+                <div class="flashcards-layout-grid">
+                  <!-- Left Column: Flashcard & Navigation -->
+                  <div class="flashcards-left-col">
+                    <div class="flashcard-container">
+                      <div class="flashcard" [class.flipped]="cardFlipped" (click)="flipCard()">
+                        <div class="card-front">
+                          <span class="card-header-label">TOPIC {{ currentCardIndex + 1 }}</span>
+                          
+                          <p class="card-main-topic">{{ filteredFlashcards[currentCardIndex]?.topic || filteredFlashcards[currentCardIndex]?.question || '' }}</p>
+                          
+                          <span class="flip-hint">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <path d="M1 4v6h6M23 20v-6h-6" />
+                              <path d="M20.49 9a9 9 0 0 0-14.85-4.36L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15" />
+                            </svg>
+                            Click card to flip
+                          </span>
+                        </div>
+
+                        <div class="card-back">
+                          <span class="card-header-label">EXPLANATION</span>
+                          
+                          <p class="card-main-explanation">{{ filteredFlashcards[currentCardIndex]?.explanation || filteredFlashcards[currentCardIndex]?.answer || '' }}</p>
+                          
+                          <span class="flip-hint">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <path d="M1 4v6h6M23 20v-6h-6" />
+                              <path d="M20.49 9a9 9 0 0 0-14.85-4.36L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15" />
+                            </svg>
+                            Click card to flip
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="card-controls">
+                      <button class="ctrl-btn" [disabled]="currentCardIndex === 0" (click)="prevCard()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M15 18l-6-6 6-6" />
+                        </svg>
+                        Previous
+                      </button>
+                      <button class="ctrl-btn" [disabled]="currentCardIndex === filteredFlashcards.length - 1" (click)="nextCard()">
+                        Next
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M9 18l6-6-6-6" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Right Column: Right Panel -->
+                  <div class="flashcards-right-panel">
+                    
+                    <!-- Study Status Toggle (Seen This) -->
+                    <div class="panel-section seen-toggle-section">
+                      <div class="seen-toggle-header">
+                        <span class="section-label">STUDY STATUS</span>
+                        <label class="toggle-switch">
+                          <input type="checkbox" 
+                                 [checked]="filteredFlashcards[currentCardIndex]?.seen !== undefined ? filteredFlashcards[currentCardIndex]?.seen : isCardSeen(filteredFlashcards[currentCardIndex])" 
+                                 (change)="toggleCardSeen($event)">
+                          <span class="toggle-slider"></span>
+                        </label>
+                      </div>
+                      <div class="seen-status-text">
+                        <span class="status-indicator" [class.seen]="filteredFlashcards[currentCardIndex]?.seen !== undefined ? filteredFlashcards[currentCardIndex]?.seen : isCardSeen(filteredFlashcards[currentCardIndex])"></span>
+                        {{ (filteredFlashcards[currentCardIndex]?.seen !== undefined ? filteredFlashcards[currentCardIndex]?.seen : isCardSeen(filteredFlashcards[currentCardIndex])) ? 'Mastered (Marked as Seen)' : 'Reviewing' }}
+                      </div>
+                    </div>
+
+                    <!-- Explanation -->
+                    <div class="panel-section">
+                      <span class="section-label">EXPLANATION</span>
+                      <div class="panel-explanation-box">
+                        <p class="panel-explanation-text">
+                          {{ filteredFlashcards[currentCardIndex]?.explanation || filteredFlashcards[currentCardIndex]?.answer || 'No explanation available.' }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Key Points -->
+                    <div class="panel-section" *ngIf="filteredFlashcards[currentCardIndex]?.detailText">
+                      <span class="section-label">KEY POINTS</span>
+                      <ul class="panel-key-points">
+                        <li>{{ filteredFlashcards[currentCardIndex]?.answerText }}</li>
+                        <li>{{ filteredFlashcards[currentCardIndex]?.detailText }}</li>
+                      </ul>
+                    </div>
+
+                    <!-- Related Concepts -->
+                    <div class="panel-section" *ngIf="filteredFlashcards[currentCardIndex]?.relatedConcepts?.length">
+                      <span class="section-label">RELATED CONCEPTS</span>
+                      <div class="panel-tags">
+                        <span class="panel-tag-pill" *ngFor="let tag of filteredFlashcards[currentCardIndex]?.relatedConcepts">
+                          {{ tag }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="panel-section">
+                      <span class="section-label">MY STUDY NOTES</span>
+                      <textarea class="panel-notes-textarea" 
+                                [(ngModel)]="currentCardNotes" 
+                                placeholder="Type notes for this card here... (auto-saved)"></textarea>
+                    </div>
+
+                  </div>
+                </div>
+              </ng-container>
+              <ng-template #noFlashcards>
+                <div style="text-align: center; padding: 40px; color: #666; display: flex; flex-direction: column; align-items: center;">
+                  <p>No flashcards available</p>
+                </div>
+              </ng-template>
+            </ng-container>
+          </div>
+
+        <div class="tab-content mindmap-tab" *ngIf="currentView === 'mindmap'">
+            <div *ngIf="isMindMapLoading" class="loading-container" style="text-align: center; padding: 40px; color: #666; width: 100%;">
+              <div class="spinner-icon" style="margin: 0 auto 12px; border: 3px solid #f3f3f3; border-top: 3px solid #1a2f6e; border-radius: 50%; width: 24px; height: 24px;"></div>
+              <p>Loading mind map...</p>
+            </div>
+
+            <ng-container *ngIf="!isMindMapLoading">
+              <div class="mindmap-layout-container">
+                
+                <!-- Left Sidebar (Reference A layout) -->
+                <aside class="mindmap-sidebar">
+                  <div class="sidebar-header">
+                    <h2 class="sidebar-title">Mind Map</h2>
+                    <p class="sidebar-subtitle">Visual representation of concepts and relationships</p>
+                  </div>
+
+                  <nav class="sidebar-nav">
+                    <button class="nav-item" [class.active]="activeSidebarNav === 'overview'" (click)="selectSidebarNav('overview')">
+                      <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="9" rx="1" />
+                        <rect x="14" y="3" width="7" height="5" rx="1" />
+                        <rect x="14" y="12" width="7" height="9" rx="1" />
+                        <rect x="3" y="16" width="7" height="5" rx="1" />
+                      </svg>
+                      <span>Overview</span>
+                    </button>
+                    <button class="nav-item" [class.active]="activeSidebarNav === 'all'" (click)="selectSidebarNav('all')">
+                      <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                      </svg>
+                      <span>All Nodes</span>
+                    </button>
+                    <button class="nav-item" [class.active]="activeSidebarNav === 'bookmarks'" (click)="selectSidebarNav('bookmarks')">
+                      <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                      </svg>
+                      <span>Bookmarks</span>
+                    </button>
+                  </nav>
+
+                  <div class="sidebar-section">
+                    <h3 class="section-heading">Map Details</h3>
+                    <div class="detail-row">
+                      <span class="detail-label">Total Nodes</span>
+                      <span class="detail-value">{{ totalNodesCount }}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">Main Topics</span>
+                      <span class="detail-value">{{ mainTopicsCount }}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">Sub Topics</span>
+                      <span class="detail-value">{{ subTopicsCount }}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">Last Updated</span>
+                      <span class="detail-value">Just now</span>
+                    </div>
+                  </div>
+
+                  <div class="sidebar-tips-card">
+                    <div class="tips-header">
+                      <svg class="tips-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .6 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+                        <path d="M9 18h6" />
+                        <path d="M10 22h4" />
+                      </svg>
+                      <span class="tips-title">Tips</span>
+                    </div>
+                    <p class="tips-text">Click on any node to view detailed explanation, related concepts, and more.</p>
+                  </div>
+
+                  <button class="sidebar-reset-btn" (click)="resetMapZoom()">
+                    <svg class="reset-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                    </svg>
+                    <span>Reset Map</span>
+                  </button>
+                </aside>
+
+                <!-- Main Content Panel -->
+                <div class="mindmap-main-panel">
+                  
+                  <!-- Main Header Bar (Reference A design) -->
+                  <header class="mindmap-header-bar">
+                    <button class="mm-back-btn" (click)="goBack()">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                      </svg>
+                      <span>Back</span>
+                    </button>
+                    <div class="mm-header-content">
+                      <h1 class="mm-title">{{ activeDocument?.name || 'Cyber Concepts Analysis' }}</h1>
+                      <p class="mm-subtitle" *ngIf="totalNodesCount > 0">
+                        Analysis of {{ totalNodesCount }} concepts and relationships from this document
+                      </p>
+                    </div>
+                  </header>
+
+                  <!-- Canvas Area -->
+                  <div class="mindmap-canvas-container" #canvasContainer
+                       *ngIf="mindMapData && mindMapData.label !== 'Generating Mind Map...'; else noMindMap"
+                       (mousedown)="onCanvasMouseDown($event)"
+                       (mousemove)="onCanvasMouseMove($event)"
+                       (mouseup)="onCanvasMouseUp($event)">
+                    
+                    <!-- Dot Grid Background -->
+                    <div class="dot-grid-bg"></div>
+
+                    <!-- Floating Top Left Controls Header (Search & Mode Toggles) -->
+                    <div class="mindmap-top-controls">
+                      <div class="mm-search-box">
+                        <input type="text" placeholder="Search concepts..." [(ngModel)]="conceptSearchQuery" (keyup.enter)="searchConcept()" />
+                        <button class="mm-search-btn" (click)="searchConcept()" title="Search">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                          </svg>
+                        </button>
+                      </div>
+                      <div class="mm-mode-toggles">
+                        <button class="mode-toggle-btn" [class.active]="studyModeActive" (click)="studyModeActive = !studyModeActive; examModeActive = false;" title="Toggle Study Mode">
+                          🎓 Study View
+                        </button>
+                        <button class="mode-toggle-btn" [class.active]="examModeActive" (click)="examModeActive = !examModeActive; studyModeActive = false;" title="Toggle Exam Mode">
+                          🔥 Exam View
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Pannable and Zoomable Canvas Content -->
+                    <div class="mindmap-pan-zoom-container"
+                         [style.transform]="'translate(' + panX + 'px, ' + panY + 'px) scale(' + zoomLevel / 100 + ')'"
+                         [class.panning]="isPanning">
+                      
+                      <!-- Curved Bezier SVG Connections -->
+                      <svg class="connections-svg">
+                        <path *ngFor="let conn of visualConnections"
+                              [attr.d]="conn.d"
+                              [class.entering]="conn.entering"
+                              class="connection-line" />
+                      </svg>
+
+                      <!-- Pill capsule nodes -->
+                      <div *ngFor="let node of visualNodes"
+                           class="mm-bubble-node"
+                           [class.node-level-0]="node.level === 0"
+                           [class.node-level-1]="node.level === 1"
+                           [class.node-level-2]="node.level === 2"
+                           [class.selected]="selectedMindMapNode?.id === node.id"
+                           [class.study-highlight]="studyModeActive && (node.originalNode.importance >= 8)"
+                           [class.study-fade]="studyModeActive && (node.originalNode.importance < 8)"
+                           [class.exam-highlight]="examModeActive && (node.originalNode.importance >= 7)"
+                           [class.exam-fade]="examModeActive && (node.originalNode.importance < 7)"
+                           [class.entering]="node.entering"
+                           [class.exiting]="node.exiting"
+                           [class.pulse]="node.pulse"
+                           [style.left.px]="node.x"
+                           [style.top.px]="node.y"
+                           (click)="onNodeClick(node, $event)"
+                           (mouseenter)="onNodeMouseEnter(node, $event)"
+                           (mousemove)="onNodeMouseMove($event)"
+                           (mouseleave)="onNodeMouseLeave()">
+                        
+                        <span class="node-label">
+                          <span class="exam-badge" *ngIf="examModeActive && (node.originalNode.importance >= 7)">🔥 High Relevance</span>
+                          {{ node.label }}
+                        </span>
+                        
+                        <button class="node-toggle-btn"
+                                *ngIf="node.hasChildren"
+                                (click)="toggleNodeExpansion(node, $event)"
+                                [title]="node.expanded ? 'Collapse' : 'Expand'">
+                          <svg *ngIf="!node.expanded" viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="3.5" fill="none">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                          </svg>
+                          <svg *ngIf="node.expanded" viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="3.5" fill="none">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Custom Floating Tooltip Overlay (Reference A Design) -->
+                    <div class="mm-tooltip" *ngIf="showTooltip && hoveredMindMapNode"
+                         [style.left.px]="tooltipX"
+                         [style.top.px]="tooltipY">
+                      <div class="tooltip-title">{{ hoveredMindMapNode.label }}</div>
+                      <div class="tooltip-desc">{{ hoveredMindMapNode.originalNode.description || 'Hover to view details.' }}</div>
+                      <div class="tooltip-importance-badge-container">
+                        <span class="importance-score-pill">
+                          Importance Score: {{ hoveredMindMapNode.originalNode.importance || 8 }}/10
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Bottom-Right Minimap Navigator -->
+                    <div class="mindmap-minimap" (click)="onMinimapClick($event)" title="Click to navigate map">
+                      <span class="minimap-label">MINIMAP</span>
+                      <svg class="minimap-svg">
+                        <rect class="minimap-viewport"
+                              [attr.x]="miniViewport.x"
+                              [attr.y]="miniViewport.y"
+                              [attr.width]="miniViewport.w"
+                              [attr.height]="miniViewport.h" />
+                        <circle *ngFor="let mNode of miniNodes"
+                                [attr.cx]="mNode.x"
+                                [attr.cy]="mNode.y"
+                                [attr.r]="mNode.level === 0 ? 3.5 : (mNode.level === 1 ? 2.5 : 1.5)"
+                                [attr.class]="'mini-dot level-' + mNode.level" />
+                      </svg>
+                    </div>
+
+                    <!-- Floating Glassmorphism Toolbar -->
+                    <div class="mindmap-floating-toolbar">
+                      <button class="tb-btn" (click)="zoomIn()" title="Zoom In">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="12" y1="8" x2="12" y2="16"></line>
+                          <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                      </button>
+                      <span class="tb-zoom-level">{{ zoomLevel }}%</span>
+                      <button class="tb-btn" (click)="zoomOut()" title="Zoom Out">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                      </button>
+                      
+                      <div class="tb-divider"></div>
+                      
+                      <button class="tb-btn" (click)="fitView()" title="Fit View">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M15 3h6v6M9 21H3v-6M21 15v6h-6M3 9V3h6"></path>
+                        </svg>
+                      </button>
+                      <button class="tb-btn" (click)="centerMap()" title="Center Map">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      </button>
+                      <button class="tb-btn" (click)="toggleFullscreen()" [class.active]="isFullscreen" title="Fullscreen">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path *ngIf="!isFullscreen" d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                          <path *ngIf="isFullscreen" d="M4 14h6v6m10-6h-6v6M4 10h6V4m10 6h-6V4"></path>
+                        </svg>
+                      </button>
+                      
+                      <div class="tb-divider"></div>
+                      
+                      <button class="tb-btn" (click)="expandAll()" title="Expand All">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="4 14 10 14 10 20"></polyline>
+                          <polyline points="20 10 14 10 14 4"></polyline>
+                          <line x1="14" y1="10" x2="21" y2="3"></line>
+                          <line x1="10" y1="14" x2="3" y2="21"></line>
+                        </svg>
+                      </button>
+                      <button class="tb-btn" (click)="collapseAll()" title="Collapse All">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="10 4 10 10 4 10"></polyline>
+                          <polyline points="14 20 14 14 20 14"></polyline>
+                          <line x1="14" y1="14" x2="21" y2="21"></line>
+                          <line x1="10" y1="10" x2="3" y2="3"></line>
+                        </svg>
+                      </button>
+                      
+                      <div class="tb-divider"></div>
+     
+                      <button class="tb-btn" (click)="exportPNG()" title="Export PNG">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+                        </svg>
+                      </button>
+                      <button class="tb-btn" (click)="exportSVG()" title="Export SVG">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+                        </svg>
+                      </button>
+                    </div>
+
+                    <!-- Slide-Over Right Panel (Redesigned) -->
+                    <div class="mm-node-details-panel" [class.open]="showNodePanel">
+                      <div class="panel-header">
+                        <h3 class="panel-title">{{ selectedMindMapNode?.label }}</h3>
+                        <button class="panel-close-btn" (click)="showNodePanel = false" title="Close Panel">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                          </svg>
+                        </button>
+                      </div>
+                      
+                      <div class="panel-body">
+                        <!-- Dynamic HTML content -->
+                        <div class="explanation-content" [innerHTML]="nodeExplanationHtml"></div>
+                        
+                        <div *ngIf="nodeExplanationLoading" class="explanation-spinner">
+                          <div class="spinner-circle"></div>
+                          <span>AI is generating topic details...</span>
+                        </div>
+                      </div>
+                      
+                      <div class="panel-footer">
+                        <h4 class="footer-title">STUDY ACTIONS</h4>
+                        <div class="study-actions-grid">
+                          <button class="action-btn" (click)="switchTab('flashcards')" title="Open Flashcards">
+                            <span class="action-icon">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                              </svg>
+                            </span>
+                            <span class="action-label">Open Flashcards</span>
+                          </button>
+                          <button class="action-btn" (click)="switchTab('quiz')" title="Start Quiz">
+                            <span class="action-icon">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                              </svg>
+                            </span>
+                            <span class="action-label">Start Quiz</span>
+                          </button>
+                          <button class="action-btn" (click)="switchTab('summary')" title="Generate Summary">
+                            <span class="action-icon">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                              </svg>
+                            </span>
+                            <span class="action-label">Generate Summary</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!-- AI Generated Insights / Themes Panel (Renders Below Map) -->
+                  <div class="mindmap-insights-panel" *ngIf="keyThemes && keyThemes.length > 0">
+                    <div class="insights-header">
+                      <span class="insights-title">💡 Key Learning Themes</span>
+                      <span class="insights-desc">Select a theme to highlight and explore it in the knowledge map</span>
+                    </div>
+                    <div class="insights-grid">
+                      <div class="insight-pill" *ngFor="let theme of keyThemes" (click)="searchAndFocus(theme)">
+                        <span class="insight-check">✓</span>
+                        <span class="insight-label">{{ theme }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <ng-template #noMindMap>
+                    <div style="text-align: center; padding: 40px; color: #666; display: flex; flex-direction: column; align-items: center; width: 100%;">
+                      <p>Empty mind map</p>
+                    </div>
+                  </ng-template>
+
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+          <!-- QUIZ VIEW -->
+          <div class="tab-content" *ngIf="currentView === 'quiz'">
+            <button class="back-btn" (click)="goBack()" style="margin-bottom: 16px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              Back
+            </button>
+            <h2 class="section-title">Quiz</h2>
+
+            <div *ngIf="isQuizLoading" class="loading-container" style="text-align: center; padding: 40px; color: #666;">
+              <div class="spinner-icon" style="margin: 0 auto 12px; border: 3px solid #f3f3f3; border-top: 3px solid #1a2f6e; border-radius: 50%; width: 24px; height: 24px;"></div>
+              <p>Loading quiz...</p>
+            </div>
+
+            <ng-container *ngIf="!isQuizLoading">
+              <ng-container *ngIf="quizQuestions && quizQuestions.length > 0; else noQuiz">
+                <div class="progress-row">
+                  <span class="progress-label">
+                    Question {{ currentQuestionIndex + 1 }} of {{ quizQuestions.length }}
+                  </span>
+                  <div class="progress-track">
+                    <div class="progress-fill" [style.width.%]="((currentQuestionIndex + 1) / quizQuestions.length) * 100">
+                    </div>
+                  </div>
+                  <span class="progress-pct">
+                    {{ Math.round(((currentQuestionIndex + 1) / quizQuestions.length) * 100) }}%
+                    Complete
+                  </span>
+                </div>
+
+                <div class="quiz-card" *ngIf="!quizFinished">
+                  <h3 class="quiz-question">{{ quizQuestions[currentQuestionIndex]?.question || '' }}</h3>
+                  <div class="quiz-options">
+                    <button class="quiz-option"
+                      *ngFor="let opt of quizQuestions[currentQuestionIndex]?.options || []; let i = index"
+                      [class.selected]="selectedAnswer === i" [class.correct]="
+                        answerRevealed && i === quizQuestions[currentQuestionIndex]?.correct
+                      " [class.wrong]="
+                        answerRevealed &&
+                        selectedAnswer === i &&
+                        i !== quizQuestions[currentQuestionIndex]?.correct
+                      " (click)="selectAnswer(i)">
+                      {{ opt }}
+                    </button>
+                  </div>
+                </div>
+
+                <div class="quiz-explanation" *ngIf="answerRevealed"
+                  [class.is-correct]="selectedAnswer === quizQuestions[currentQuestionIndex]?.correct"
+                  [class.is-incorrect]="selectedAnswer !== quizQuestions[currentQuestionIndex]?.correct">
+                  <div class="explanation-header"
+                    [class.is-correct]="selectedAnswer === quizQuestions[currentQuestionIndex]?.correct"
+                    [class.is-incorrect]="selectedAnswer !== quizQuestions[currentQuestionIndex]?.correct">
+                    <span *ngIf="selectedAnswer === quizQuestions[currentQuestionIndex]?.correct"
+                      class="status correct-status">
+                      ✅ Correct
+                    </span>
+                    <span *ngIf="selectedAnswer !== quizQuestions[currentQuestionIndex]?.correct"
+                      class="status incorrect-status">
+                      ❌ Incorrect
+                    </span>
+                  </div>
+
+                  <div class="explanation-body">
+                    {{
+                    quizQuestions[currentQuestionIndex]?.options?.[
+                    quizQuestions[currentQuestionIndex]?.correct || 0
+                    ] || ''
+                    }}
+                    <span class="explanation-text">
+                      {{ quizQuestions[currentQuestionIndex]?.explanation || '' }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="quiz-result" *ngIf="quizFinished">
+                  <div class="result-circle">
+                    <span class="result-score">{{ quizScore }}/{{ quizQuestions.length }}</span>
+                    <span class="result-label">Score</span>
+                  </div>
+                  <h3 class="result-msg">
+                    {{ isQuizSuccessful ? '🎉 Great job!' : '📚 Keep studying!' }}
+                  </h3>
+                  <div style="display: flex; gap: 12px; margin-top: 24px; justify-content: center;">
+                    <button class="retry-btn" (click)="retryQuiz()">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 11-.57-8.38l5.67-5.67" />
+                      </svg>
+                      Retry Quiz
+                    </button>
+                  </div>
+                </div>
+
+                <div class="quiz-nav" *ngIf="!quizFinished" style="margin-top: 24px;">
+                  <button class="ctrl-btn" [disabled]="currentQuestionIndex === 0" (click)="prevQuestion()">
+                    Previous
+                  </button>
+                  <button class="ctrl-btn" (click)="nextQuestion()">
+                    {{ currentQuestionIndex === quizQuestions.length - 1 ? 'Finish' : 'Next Question' }}
+                  </button>
+                </div>
+              </ng-container>
+              <ng-template #noQuiz>
+                <div style="text-align: center; padding: 40px; color: #666; display: flex; flex-direction: column; align-items: center;">
+                  <p>No quiz questions available</p>
+                </div>
+              </ng-template>
+            </ng-container>
+          </div>
+
+          <!-- DISCUSSION -->
+          <div class="tab-content discussion-view" *ngIf="currentView === 'discussion'">
+            <ng-container *ngIf="!activeDiscussion">
+              <div class="discussion-header">
+                <div>
+                  <button class="back-btn" (click)="goBack()" style="margin-bottom: 16px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Back
+                  </button>
+                  <h2 class="discussion-main-title">Group Discussion</h2>
+                  <p class="discussion-sub-title">
+                    Join conversations with other learners to deepen your understanding
+                  </p>
+                </div>
+                <button class="new-discussion-btn" (click)="showNewDiscussion = !showNewDiscussion">
+                  + New Discussion
+                </button>
+              </div>
+
+              <div class="discussion-list">
+                <div class="discussion-item" *ngFor="let disc of discussions" (click)="openDiscussion(disc)">
+                  <div class="disc-left">
+                    <span class="disc-category-badge">{{ disc.category }}</span>
+                    <h4 class="disc-title">{{ disc.title }}</h4>
+                  </div>
+                  <button class="disc-chat-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                      <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Active Thread View -->
+            <ng-container *ngIf="activeDiscussion">
+              <div class="thread-header">
+                <button class="back-link-btn" (click)="closeDiscussion()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                  </svg>
+                  Back to discussions
+                </button>
+                <div class="thread-meta-row">
+                  <span class="disc-category-badge">{{ activeDiscussion.category }}</span>
+                  <span class="disc-active-users">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                      <path d="M16 3.13a4 4 0 010 7.75" />
+                    </svg>
+                    {{ activeDiscussion.active }} active
+                  </span>
+                </div>
+                <h2 class="discussion-main-title" style="margin-bottom: 24px;">{{ activeDiscussion.title }}</h2>
+              </div>
+
+              <div class="thread-chat-container">
+                <div class="thread-messages">
+
+                  <div class="thread-message" *ngFor="let msg of activeDiscussion.threadMessages">
+                    <div class="tm-avatar" [style.background]="msg.authorColor">{{ msg.authorInitials }}</div>
+                    <div class="tm-content">
+                      <div class="tm-header">
+                        <span class="tm-name">{{ msg.authorName }}</span>
+                        <span class="tm-time">{{ msg.timeAgo }}</span>
+                      </div>
+                      <div class="tm-bubble">
+                        <span>{{ msg.content }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="thread-input-area">
+                  <input type="file" #threadFileInput style="display: none" (change)="onThreadFileSelected($event)" />
+                  <button class="thread-attach-btn" (click)="triggerThreadFileInput()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                  </button>
+                  <input type="text" class="thread-input" placeholder="Type your message..."
+                    [(ngModel)]="newThreadMessage" (keyup.enter)="sendThreadMessage()" />
+                  <button class="thread-send-btn" (click)="sendThreadMessage()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="22" y1="2" x2="11" y2="13"></line>
+                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+      <!-- /content-area -->
+    </div>
+    <!-- /body-row -->
+  </div>
+  <!-- /shell -->
+
+  <!-- Delete Confirmation Modal -->
+  <div class="google-login-modal" *ngIf="sourceToDelete">
+    <div class="google-login-content" style="width: 320px; padding: 24px; text-align: center;">
+      <h3 style="margin-top: 0; color: #1a2f6e;">Delete Document</h3>
+      <p style="color: #666; font-size: 14px; margin: 16px 0 24px;">Are you sure you want to delete this document?</p>
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <button class="ctrl-btn" (click)="cancelDelete()" style="flex: 1;">No</button>
+        <button class="ctrl-btn" (click)="proceedDelete()"
+          style="flex: 1; background: #1a2f6e; color: white; border: none;">Yes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Discussion Modal -->
+  <div class="discussion-modal-overlay" *ngIf="showNewDiscussion">
+    <div class="discussion-modal-content">
+      <div class="modal-header">
+        <h3>Start New Discussion</h3>
+        <button class="close-btn" (click)="showNewDiscussion = false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Category</label>
+          <div class="select-wrapper">
+            <select [(ngModel)]="newDiscCategory">
+              <option value="Critical Analysis">Critical Analysis</option>
+              <option value="General Discussion">General Discussion</option>
+              <option value="Q&A">Q&A</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Discussion Title</label>
+          <input type="text" [(ngModel)]="newDiscTitle" placeholder="What would you like to discuss?" />
+        </div>
+        <div class="form-group">
+          <label>Your Message</label>
+          <textarea [(ngModel)]="newDiscMessage" placeholder="Share your thoughts, questions, or insights..."
+            rows="4"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="cancel-btn" (click)="showNewDiscussion = false">Cancel</button>
+        <button class="create-btn" (click)="addDiscussion()">+ Create Discussion</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Integration Debug Panel -->
+  <div *ngIf="debugMode" class="integration-debug-panel" style="position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: #00ff00; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 12px; z-index: 9999; width: 350px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <h4 style="margin: 0 0 10px 0; border-bottom: 1px solid #333; padding-bottom: 5px; color: #fff;">Integration Debug</h4>
+    <div style="margin-bottom: 5px;"><strong>Last Endpoint:</strong> <span style="word-break: break-all;">{{ lastEndpointCalled }}</span></div>
+    <div style="margin-bottom: 5px;"><strong>Response Status:</strong> <span [ngStyle]="{'color': lastResponseStatus === '200 OK' ? '#00ff00' : (lastResponseStatus.startsWith('Error') ? '#ff4444' : '#ffaa00')}">{{ lastResponseStatus }}</span></div>
+    <div style="margin-bottom: 5px;"><strong>Response Time:</strong> {{ lastResponseTime }} ms</div>
+    <div style="margin-bottom: 5px;"><strong>Polling Status:</strong> {{ pollingStatus }}</div>
+    <div style="margin-bottom: 5px;"><strong>Active View:</strong> {{ currentView }}</div>
+    <div style="margin-bottom: 5px;"><strong>Doc Status:</strong> {{ selectedDocumentStateService.getActiveDocument()?.status || 'None' }}</div>
+    
+    <div style="margin-top: 10px; text-align: right;">
+      <button (click)="debugMode = false" style="background: #333; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 10px;">Close Panel</button>
+    </div>
+  </div>
+
+</ng-container>

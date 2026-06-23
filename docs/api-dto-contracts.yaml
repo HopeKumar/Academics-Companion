@@ -1,0 +1,1045 @@
+openapi: 3.0.1
+info:
+  title: CampusLM API Contracts
+  version: 1.0
+components:
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: T
+        message:
+          type: String
+        timestamp:
+          type: long
+        requestId:
+          type: String
+        status:
+          type: String
+        error:
+          type: String
+    LogoutRequest:
+      type: object
+      properties:
+        token:
+          type: String
+    RegisterRequest:
+      type: object
+      properties:
+        username:
+          type: String
+        password:
+          type: String
+        role:
+          type: Role
+    RefreshRequest:
+      type: object
+      properties:
+        refreshToken:
+          type: String
+    AuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: String
+        refreshToken:
+          type: String
+        username:
+          type: String
+        role:
+          type: String
+        id:
+          type: String
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: String
+        password:
+          type: String
+    StudentDashboardResponse:
+      type: object
+      properties:
+        currentLevel:
+          type: String
+        masteryScore:
+          type: double
+        averageScore:
+          type: double
+        weakTopics:
+          type: List<String>
+        strongTopics:
+          type: List<String>
+        recentProgress:
+          type: String
+        studyStreak:
+          type: int
+    AuditLog:
+      type: object
+      properties:
+        id:
+          type: String
+        userId:
+          type: String
+        action:
+          type: String
+        resourceId:
+          type: String
+        details:
+          type: String
+        ipAddress:
+          type: String
+        timestamp:
+          type: Instant
+    FlashcardDeck:
+      type: object
+      properties:
+        id:
+          type: String
+        userId:
+          type: String
+        sourceId:
+          type: String
+        topic:
+          type: String
+        title:
+          type: String
+        createdAt:
+          type: String
+        generationSource:
+          type: String
+    ChatSession:
+      type: object
+      properties:
+        id:
+          type: String
+        userId:
+          type: String
+        title:
+          type: String
+        createdAt:
+          type: String
+        updatedAt:
+          type: String
+    DocumentChunk:
+      type: object
+      properties:
+        id:
+          type: String
+        sourceId:
+          type: String
+        userId:
+          type: String
+        text:
+          type: String
+        embedding:
+          type: List<Double>
+        pageNumber:
+          type: int
+    UserLearningProfile:
+      type: object
+      properties:
+        userId:
+          type: String
+        learningSpeed:
+          type: double
+        retentionRate:
+          type: double
+        preferredDifficulty:
+          type: int
+        conceptStrength:
+          type: Map<String, Double>
+        recentAttempts:
+          type: int
+        fatigueScore:
+          type: double
+    Notification:
+      type: object
+      properties:
+        id:
+          type: String
+        userId:
+          type: String
+        type:
+          type: Type
+        title:
+          type: String
+        message:
+          type: String
+        read:
+          type: boolean
+        createdAt:
+          type: String
+        createdAtMs:
+          type: long
+        resourceId:
+          type: String
+        resourceType:
+          type: String
+    QuestionBank:
+      type: object
+      properties:
+        id:
+          type: String
+        subject:
+          type: String
+        unit:
+          type: String
+        difficulty:
+          type: String
+        year:
+          type: int
+        question:
+          type: String
+        answer:
+          type: String
+        tags:
+          type: List<String>
+    User:
+      type: object
+      properties:
+        id:
+          type: String
+        username:
+          type: String
+        passwordHash:
+          type: String
+        role:
+          type: Role
+        createdAt:
+          type: String
+    DocumentArtifact:
+      type: object
+      properties:
+        id:
+          type: String
+        documentId:
+          type: String
+        type:
+          type: ArtifactType
+        storageKey:
+          type: String
+        status:
+          type: String
+        createdAt:
+          type: LocalDateTime
+    Document:
+      type: object
+      properties:
+        id:
+          type: String
+        ownerId:
+          type: String
+        originalFilename:
+          type: String
+        fileHashSha256:
+          type: String
+        sizeBytes:
+          type: Long
+        mimeType:
+          type: String
+        status:
+          type: DocumentStatus
+        summaryStatus:
+          type: ProcessingStatus
+        quizStatus:
+          type: ProcessingStatus
+        flashcardStatus:
+          type: ProcessingStatus
+        mindmapStatus:
+          type: ProcessingStatus
+        discussionStatus:
+          type: ProcessingStatus
+        embeddingStatus:
+          type: ProcessingStatus
+        podcastStatus:
+          type: ProcessingStatus
+        createdAt:
+          type: LocalDateTime
+        updatedAt:
+          type: LocalDateTime
+        artifacts:
+          type: List<DocumentArtifact>
+    DiscussionThread:
+      type: object
+      properties:
+        id:
+          type: String
+        title:
+          type: String
+        content:
+          type: String
+        sourceId:
+          type: String
+        authorId:
+          type: String
+        aiSummary:
+          type: String
+        upvotes:
+          type: int
+        createdAt:
+          type: String
+        updatedAt:
+          type: String
+    TestRequest:
+      type: object
+      properties:
+        userId:
+          type: String
+        questions:
+          type: List<Question>
+        history:
+          type: List<ResponseRecord>
+    Question:
+      type: object
+      properties:
+        id:
+          type: String
+        text:
+          type: String
+        concept:
+          type: String
+        difficulty:
+          type: int
+        correctAnswer:
+          type: String
+        topic:
+          type: String
+        type:
+          type: String
+        sourceId:
+          type: String
+        correctOptionIndex:
+          type: Integer
+        generationSource:
+          type: String
+        explanation:
+          type: String
+    FlashcardGenerationResponse:
+      type: object
+      properties:
+        front:
+          type: String
+        back:
+          type: String
+    RecommendationResponse:
+      type: object
+      properties:
+        recommendedFlashcards:
+          type: List<String>
+        recommendedQuizzes:
+          type: List<String>
+        recommendedSummaries:
+          type: List<String>
+        recommendedMindMaps:
+          type: List<String>
+        recommendedStudySessions:
+          type: List<String>
+        weakTopics:
+          type: List<String>
+        systemInsight:
+          type: Map<String, Object>
+    JobStatus:
+      type: object
+      properties:
+        id:
+          type: String
+        sourceId:
+          type: String
+        type:
+          type: String
+        status:
+          type: String
+        message:
+          type: String
+        createdAt:
+          type: Instant
+        updatedAt:
+          type: Instant
+    DiscussionReply:
+      type: object
+      properties:
+        id:
+          type: String
+        threadId:
+          type: String
+        content:
+          type: String
+        authorId:
+          type: String
+        upvotes:
+          type: int
+        acceptedAnswer:
+          type: boolean
+        createdAt:
+          type: String
+    MindMap:
+      type: object
+      properties:
+        id:
+          type: String
+        sourceId:
+          type: String
+        userId:
+          type: String
+        mindMap:
+          type: Map<String, Object>
+        generatedAt:
+          type: String
+        generationSource:
+          type: String
+    Flashcard:
+      type: object
+      properties:
+        id:
+          type: String
+        deckId:
+          type: String
+        front:
+          type: String
+        back:
+          type: String
+        topic:
+          type: String
+        interval:
+          type: int
+        easeFactor:
+          type: float
+        repetitions:
+          type: int
+        nextReviewDate:
+          type: String
+    MasteryRequest:
+      type: object
+      properties:
+        studentId:
+          type: String
+        topic:
+          type: String
+        correct:
+          type: boolean
+    StudyPlan:
+      type: object
+      properties:
+        id:
+          type: String
+        userId:
+          type: String
+        generatedAt:
+          type: String
+        availableTime:
+          type: String
+        dailyPlan:
+          type: List<Map<String, Object>>
+        weeklyPlan:
+          type: List<Map<String, Object>>
+    StudentLearningProfile:
+      type: object
+      properties:
+        id:
+          type: String
+        userId:
+          type: String
+        overallMastery:
+          type: double
+        currentLevel:
+          type: StudentLevel
+        totalQuizzes:
+          type: int
+        averageScore:
+          type: double
+        streakDays:
+          type: int
+        lastActivity:
+          type: String
+        createdAt:
+          type: String
+        updatedAt:
+          type: String
+        topicConsistency:
+          type: double
+        revisionFrequency:
+          type: double
+        engagementScore:
+          type: double
+        knowledgeGrowthTrend:
+          type: List<Double>
+        subjectMasteryTrend:
+          type: Map<String, String>
+        topicMasteryTrend:
+          type: Map<String, String>
+    SlideExport:
+      type: object
+      properties:
+        id:
+          type: String
+        sourceId:
+          type: String
+        userId:
+          type: String
+        pptFile:
+          type: String
+        downloadUrl:
+          type: String
+        pdfFile:
+          type: String
+        pdfDownloadUrl:
+          type: String
+        status:
+          type: String
+        generatedAt:
+          type: String
+    EmbeddingEntity:
+      type: object
+      properties:
+        id:
+          type: String
+        sourceId:
+          type: String
+        chunkIndex:
+          type: Integer
+        content:
+          type: String
+        embedding:
+          type: List<Double>
+        createdAt:
+          type: LocalDateTime
+    Citation:
+      type: object
+      properties:
+        sourceId:
+          type: String
+        sourceName:
+          type: String
+        snippet:
+          type: String
+        pageNumber:
+          type: int
+    FacultyDashboardResponse:
+      type: object
+      properties:
+        totalStudents:
+          type: int
+        activeStudents:
+          type: int
+        averageMastery:
+          type: double
+        strongestTopics:
+          type: List<String>
+        weakestTopics:
+          type: List<String>
+        mostActiveStudents:
+          type: List<String>
+        topPerformers:
+          type: List<String>
+        atRiskStudents:
+          type: List<String>
+        mostImprovedStudents:
+          type: List<String>
+        engagementMetrics:
+          type: Map<String, Object>
+    Source:
+      type: object
+      properties:
+        id:
+          type: String
+        userId:
+          type: String
+        name:
+          type: String
+        type:
+          type: String
+        url:
+          type: String
+        fileSize:
+          type: long
+        createdAt:
+          type: String
+        metadata:
+          type: Map<String, Object>
+    TopicMastery:
+      type: object
+      properties:
+        MAX_ATTEMPTS_NORM:
+          type: static final int
+        LOG_NORM:
+          type: static final double
+        TREND_THRESHOLD:
+          type: static final double
+        WINDOW_SIZE:
+          type: static final int
+        id:
+          type: String
+        studentId:
+          type: String
+        subject:
+          type: String
+        topic:
+          type: String
+        totalQuestions:
+          type: int
+        incorrectAnswers:
+          type: int
+        masteryScore:
+          type: double
+        correctAnswers:
+          type: int
+        accuracy:
+          type: double
+        confidenceScore:
+          type: double
+        recentWindow:
+          type: String
+        previousAccuracy:
+          type: double
+        trend:
+          type: String
+        lastUpdated:
+          type: String
+    TestResponse:
+      type: object
+      properties:
+        question:
+          type: Question
+        reason:
+          type: String
+    Podcast:
+      type: object
+      properties:
+        id:
+          type: String
+        userId:
+          type: String
+        topic:
+          type: String
+        sourceId:
+          type: String
+        script:
+          type: List<Map<String, String>>
+        audioFile:
+          type: String
+        audioUrl:
+          type: String
+        audioStatus:
+          type: PodcastJobStatus
+        status:
+          type: PodcastJobStatus
+        createdAt:
+          type: String
+        generationSource:
+          type: String
+    AIResult:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: T
+        error:
+          type: String
+        provider:
+          type: String
+        model:
+          type: String
+        latency:
+          type: long
+        timestamp:
+          type: String
+    DocumentIngestedEvent:
+      type: object
+      properties:
+        sourceId:
+          type: final String
+        userId:
+          type: final String
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: String
+        sessionId:
+          type: String
+        sender:
+          type: String
+        content:
+          type: String
+        citations:
+          type: List<Citation>
+        timestamp:
+          type: long
+    SlideDeckResponse:
+      type: object
+      properties:
+        title:
+          type: String
+        bulletPoints:
+          type: List<String>
+        speakerNotes:
+          type: String
+    StudyPlanRequest:
+      type: object
+      properties:
+        availableTime:
+          type: String
+    BlacklistedToken:
+      type: object
+      properties:
+        id:
+          type: String
+        expiryDate:
+          type: Date
+    is:
+      type: object
+      properties:
+        id:
+          type: String
+        userId:
+          type: String
+        questionId:
+          type: String
+        concept:
+          type: String
+        difficulty:
+          type: int
+        correct:
+          type: boolean
+        studentAnswer:
+          type: String
+        timestamp:
+          type: long
+    EvalResult:
+      type: object
+      properties:
+        correct:
+          type: final boolean
+        explanation:
+          type: final String
+        cached:
+          type: final boolean
+    Summary:
+      type: object
+      properties:
+        id:
+          type: String
+        sourceId:
+          type: String
+        summary:
+          type: String
+        keyPoints:
+          type: List<String>
+        importantTakeaways:
+          type: List<String>
+        definitions:
+          type: List<String>
+        nextSteps:
+          type: List<String>
+        generatedAt:
+          type: String
+        generationSource:
+          type: String
+    MindmapController:
+      type: object
+      properties:
+        mindmapService:
+          type: final MindmapService
+        authService:
+          type: final AuthService
+        mindmapRepository:
+          type: final MindmapRepository
+        jobStatusService:
+          type: final JobStatusService
+        sourceService:
+          type: final SourceService
+    AnalyticsController:
+      type: object
+      properties:
+        LOG:
+          type: static final Logger
+        analyticsService:
+          type: final AnalyticsService
+        responseRepo:
+          type: final ResponseRecordRepository
+        authService:
+          type: final AuthService
+    AdminController:
+      type: object
+      properties:
+        LOG:
+          type: static final Logger
+        chunkRepository:
+          type: final DocumentChunkRepository
+        sanitizerService:
+          type: final ContentSanitizerService
+        embeddingProvider:
+          type: final EmbeddingProvider
+        vectorStore:
+          type: final VectorStore
+    MetricsController:
+      type: object
+      properties:
+        LOG:
+          type: static final Logger
+        metrics:
+          type: final MetricsRegistry
+    SummaryController:
+      type: object
+      properties:
+        summaryService:
+          type: final SummaryService
+        authService:
+          type: final AuthService
+        pdfExportService:
+          type: final PdfExportService
+        minioStorageService:
+          type: final MinioStorageService
+        auditLogService:
+          type: final AuditLogService
+        jobStatusService:
+          type: final JobStatusService
+        sourceService:
+          type: final SourceService
+    AIHealthController:
+      type: object
+      properties:
+        aiHealthService:
+          type: final AIHealthService
+    NotificationController:
+      type: object
+      properties:
+        LOG:
+          type: static final Logger
+        notificationService:
+          type: final NotificationService
+        authService:
+          type: final AuthService
+    SlideController:
+      type: object
+      properties:
+        slideService:
+          type: final SlideService
+        authService:
+          type: final AuthService
+    FlashcardController:
+      type: object
+      properties:
+        flashcardService:
+          type: final FlashcardService
+        authService:
+          type: final AuthService
+        pdfExportService:
+          type: final PdfExportService
+        minioStorageService:
+          type: final MinioStorageService
+        auditLogService:
+          type: final AuditLogService
+        jobStatusService:
+          type: final JobStatusService
+        sourceService:
+          type: final SourceService
+    DebugController:
+      type: object
+      properties:
+        documentRepository:
+          type: final DocumentRepository
+    TopicMasteryController:
+      type: object
+      properties:
+        topicMasteryService:
+          type: final TopicMasteryService
+    DashboardController:
+      type: object
+      properties:
+        LOG:
+          type: static final Logger
+        analyticsService:
+          type: final AnalyticsService
+        recommendationService:
+          type: final RecommendationService
+        authService:
+          type: final AuthService
+    AdaptiveController:
+      type: object
+      properties:
+        adaptiveLearningService:
+          type: final AdaptiveLearningService
+    QuestionGenerationController:
+      type: object
+      properties:
+        LOG:
+          type: static final Logger
+        questionGenService:
+          type: final QuestionGenerationService
+        questionRepo:
+          type: final QuestionRepository
+        responseRepo:
+          type: final ResponseRecordRepository
+        masteryService:
+          type: final TopicMasteryService
+        analyticsService:
+          type: final AnalyticsService
+        adaptiveLearningService:
+          type: final AdaptiveLearningService
+        sourceService:
+          type: final SourceService
+        authService:
+          type: AuthService
+        concept:
+          type: String
+        difficulty:
+          type: int
+        sourceId:
+          type: String
+        questionId:
+          type: String
+        studentAnswer:
+          type: String
+        totalQuestions:
+          type: int
+    StudyPlanController:
+      type: object
+      properties:
+        LOG:
+          type: static final Logger
+        studyPlanService:
+          type: final StudyPlanService
+        authService:
+          type: final AuthService
+    SlideExportController:
+      type: object
+      properties:
+        slidesGenerationService:
+          type: final SlidesGenerationService
+        slideExportRepository:
+          type: final SlideExportRepository
+        authService:
+          type: final AuthService
+        minioStorageService:
+          type: final MinioStorageService
+        auditLogService:
+          type: final AuditLogService
+    HealthController:
+      type: object
+      properties:
+        mongoTemplate:
+          type: final MongoTemplate
+        aiHealthService:
+          type: final AIHealthService
+        ocrService:
+          type: final OCRService
+        minioStorageService:
+          type: final MinioStorageService
+        aiTaskExecutor:
+          type: final Executor
+    DocumentController:
+      type: object
+      properties:
+        documentUploadService:
+          type: final DocumentUploadService
+        documentRepository:
+          type: final DocumentRepository
+    AuthController:
+      type: object
+      properties:
+        LOG:
+          type: static final Logger
+        authenticationManager:
+          type: final AuthenticationManager
+        authService:
+          type: final AuthService
+        jwtTokenUtil:
+          type: final JwtTokenUtil
+        blacklistService:
+          type: final TokenBlacklistService
+        auditLogService:
+          type: final AuditLogService
+        metricsRegistry:
+          type: final MetricsRegistry
+    PodcastController:
+      type: object
+      properties:
+        podcastService:
+          type: final PodcastService
+        authService:
+          type: final AuthService
+        podcastRepository:
+          type: final PodcastRepository
+        minioStorageService:
+          type: final MinioStorageService
+        auditLogService:
+          type: final AuditLogService
+        sourceService:
+          type: final SourceService
+    RecommendationController:
+      type: object
+      properties:
+        LOG:
+          type: static final Logger
+        recommendationService:
+          type: final RecommendationService
+        metrics:
+          type: final MetricsRegistry
+        authService:
+          type: final AuthService
+    DiscussionController:
+      type: object
+      properties:
+        discussionService:
+          type: final DiscussionService
+        authService:
+          type: final AuthService
+    UploadController:
+      type: object
+      properties:
+        LOG:
+          type: static final Logger
+        sourceService:
+          type: final SourceService
+        authService:
+          type: final AuthService
+    ChatController:
+      type: object
+      properties:
+        LOG:
+          type: static final Logger
+        chatService:
+          type: final ChatService
+        authService:
+          type: final AuthService
+        sessionId:
+          type: String
+        content:
+          type: String
+        sourceIds:
+          type: List<String>
+    TestController:
+      type: object
+      properties:
+        LOG:
+          type: static final Logger
+        testService:
+          type: final TestService
+        masteryService:
+          type: final TopicMasteryService
+        metrics:
+          type: final MetricsRegistry
+        questionRepository:
+          type: final QuestionRepository
+        responseRepository:
+          type: final ResponseRecordRepository
+    QuestionBankController:
+      type: object
+      properties:
+        service:
+          type: final QuestionBankService
+    JobStatusController:
+      type: object
+      properties:
+        jobStatusService:
+          type: final JobStatusService
+        authService:
+          type: final AuthService
+        sourceService:
+          type: final SourceService
