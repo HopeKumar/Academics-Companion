@@ -1,20 +1,38 @@
-# Angular
-frontend/node_modules/
-frontend/.angular/
-frontend/dist/
+# Java
+target/
+*.class
+*.jar
+*.war
 
-# Spring Boot
-Backend/target/
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# Node
+node_modules/
+
+# Angular
+.angular/
+dist/
 
 # IDE
 .idea/
 .vscode/
-
-# macOS
-.DS_Store
+*.iml
 
 # Logs
 *.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated Files
+uploads/
+storage/
+temp/
 
 # Environment
 .env
+.env.local
+application-local.yml
